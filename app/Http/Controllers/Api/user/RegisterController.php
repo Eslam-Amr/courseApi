@@ -10,38 +10,122 @@ use App\Http\Requests\UserRegisterRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-// use App\Services\UserRegisterServices;
 use App\Services\userServices\auth\UserRegisterServices;
 use Helper;
+use Illuminate\Support\Facades\Validator;
+
 class RegisterController extends Controller
 {
     //
+
     public function createUser(Request $request)
     {
-dd($request->all());
+        try {
+            //Validated
+            $validateUser = Helper::registerUserVaildation($request);
 
-        $validateUser = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'gender' => 'required'
-        ]);
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'gender' => $request->gender,
+                'password' => Hash::make($request->password)
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User Created Successfully',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    // public function createUser(Request $request)
+    // {
+    //     // dd('sjk');
+    //     $validateUser = Validator::make($request->all(), [
+    //         'name' => 'required',
+    //         'email' => 'required|email|unique:users,email',
+    //         'password' => 'required'
+    //     ]);
+
+    //     // Check if validation fails
+    //     if ($validateUser->fails()) {
+    //         // Validation failed
+    //         // Handle the validation errors
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => $validateUser->errors()->first() // Return the first validation error message
+    //         ], 422);
+    //     }
+
+    //     // Validation passed
+    //     // Proceed with your logic
+
+    //     // $validateUser =Helper::registerUserVaildation($request);
+    //     // dd($validateUser);
+    //     try {
+    //         // $validateUser = Validator::make($request->all(),
+    //         // [
+    //         //     // 'name' => 'required',
+    //         //     'email' => 'required|email|unique:users,email',
+    //         //     'password' => 'required'
+    //         // ]);
+    //         // $validateUser = $this->vaildate($request);
+    //         // dd($validateUser);
+    //         // $user = Helper::createUser($validateUser);
+    //         $user = Helper::createUser($validateUser);
+    //         // return response()->json([
+    //         //                 'status' => true,
+    //         //                 'message' => 'User Created Successfully',
+    //         //                 'token' => $user->createToken("API TOKEN")->plainTextToken
+    //         //             ], 200);
+    //         Helper::createToken($user);
+    //     } catch (\Throwable $th) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => $th->getMessage()
+    //         ], 500);
+    //     }
+    // }
+    // public function createUser(Request $request)
+    // {
+// dd($request->all());
+
+        // $validateUser = Validator::make($request->all(), [
+        //     'name' => 'required',
+        //     'email' => 'required|email',
+        //     'password' => 'required',
+        //     'gender' => 'required'
+        // ]);
 
         // Check if validation fails
-        if ($validateUser->fails()) {
-            // Validation failed, handle the errors
-            // You can access the validation errors using $validateUser->errors()
-            // For example: return response()->json($validateUser->errors(), 422);
-        } else {
-            // Validation passed
-            // Get only the validated data
-            $validatedData = $validateUser->validated();
+        // if ($validateUser->fails()) {
+        //     // Validation failed, handle the errors
+        //     // You can access the validation errors using $validateUser->errors()
+        //     // For example: return response()->json($validateUser->errors(), 422);
+        // } else {
+        //     // Validation passed
+        //     // Get only the validated data
+        //     $validatedData = $validateUser->validated();
 
-            // Do something with the validated data
-            // For example, you can use it to create or update a user
-            // dd($validatedData);
-        }
+        //     // Do something with the validated data
+        //     // For example, you can use it to create or update a user
+        //     // dd($validatedData);
+        // }
 
         // $user=$userRegisterServices->createUser($request);
         // return response()->json([
@@ -61,32 +145,32 @@ dd($request->all());
         // return (new UserRegisterServices())->createUser($request);
 
 
-            $validateUser = Validator::make($request->all(),
-            [
-                'name' => 'required',
-                'email' => 'required|email',
-                'password' => 'required',
-                'gender' => 'required'
+            // $validateUser = Validator::make($request->all(),
+            // [
+            //     'name' => 'required',
+            //     'email' => 'required|email',
+            //     'password' => 'required',
+            //     'gender' => 'required'
 
-            ]);
-            dd($validateUser->validated());
-            $validateUser =Helper::registerUserVaildation($request);
-            try {
-                // $validateUser = $this->vaildate($request);
-                // dd($validateUser);
-                $user = Helper::createUser($validateUser);
-                // return response()->json([
-                //                 'status' => true,
-                //                 'message' => 'User Created Successfully',
-                //                 'token' => $user->createToken("API TOKEN")->plainTextToken
-                //             ], 200);
-                Helper::createToken($user);
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'status' => false,
-                    'message' => $th->getMessage()
-                ], 500);
-            }
+            // ]);
+            // // dd($validateUser->validated());
+            // $validateUser =Helper::registerUserVaildation($request);
+            // try {
+            //     // $validateUser = $this->vaildate($request);
+            //     // dd($validateUser);
+            //     $user = Helper::createUser($validateUser);
+            //     // return response()->json([
+            //     //                 'status' => true,
+            //     //                 'message' => 'User Created Successfully',
+            //     //                 'token' => $user->createToken("API TOKEN")->plainTextToken
+            //     //             ], 200);
+            //     Helper::createToken($user);
+            // } catch (\Throwable $th) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => $th->getMessage()
+            //     ], 500);
+            // }
 
 
 
@@ -126,7 +210,7 @@ dd($request->all());
         //         'message' => $th->getMessage()
         //     ], 500);
         // }
-    }
+    // }
     // public function createUser(UserLoginRequest $request)
     // {
     //     // dd("eslam");

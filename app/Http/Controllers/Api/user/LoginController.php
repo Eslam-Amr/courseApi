@@ -22,15 +22,19 @@ class LoginController extends Controller
 
     use GeneralTrait;
 
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
+
         try {
-            $validateUser = Validator::make($request->all(),
-            [
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
-             if($validateUser->fails()){
+            // $validateUser = Validator::make($request->all(),
+            // [
+            //     'email' => 'required|email',
+            //     'password' => 'required'
+            // ]);
+            $validateUser = Helper::loginUserVaildation($request);
+            // return $validateUser;
+            // dd($validateUser);
+            if($validateUser->fails()){
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',

@@ -40,4 +40,13 @@ class Helper
             ]);
             return $validateUser;
     }
+    public static function loginUserVaildation($request){
+
+        $validateUser = Validator::make($request->all(),
+        [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+            return $validateUser;
+    }
 }

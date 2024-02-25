@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Requests\CreateEmployeeRequest;
+use App\Models\Empolyee;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -48,5 +51,27 @@ class Helper
             'password' => 'required'
         ]);
             return $validateUser;
+    }
+    public static function createEmployee(CreateEmployeeRequest $request){
+        DB::beginTransaction();
+
+        $validateUser = $request->validated();
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => 'employee',
+            'gender' => $request->gender,
+            'password' => Hash::make($request->password)
+        ]);
+        Empolyee::create([
+            'user_id' => $user->id,
+            'salary' => $request->salary,
+            'role' => $request->role,
+            'working_hour' => $request->working_hour,
+            'working_place' => $request->working_place,
+        ]);
+        DB::commit();
+return $user;
     }
 }

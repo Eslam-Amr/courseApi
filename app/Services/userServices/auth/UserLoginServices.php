@@ -3,114 +3,41 @@
 namespace App\Services\userServices\auth;
 
 use App\Http\Requests\UserLoginRequest;
+use App\Models\Student;
 use App\Models\User;
 use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\GeneralTrait;
 
-class UserRegisterServices
+class UserLoginServices
 {
+    use GeneralTrait;
     protected $model;
         public function __construct()
     {
 
-        $this->model = new User();
+        $this->model = new Student();
     }
-    // public function vaildate($request)
-    // {
-    //     // $validateUser = validator::make($request, $request->rule());
-    //     // $validateUser=$request->validate();
-    //     if ($validateUser->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'validation error',
-    //             'errors' => $validateUser->errors()
-    //         ], 401);
-    //     }
-    //     // dd($validateUser);
-    //     return $validateUser;
-    //     // return $request;
-    // }
-
-
-    public function createUser($request)
+    public function login(UserLoginRequest $request)
     {
-        dd('sjk');
 
-        $validateUser = Validator::make($request->all(),
-        [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required'
-        ]);
-        dd($validateUser);
-        $validateUser =Helper::registerUserVaildation($request);
         try {
-            // $validateUser = $this->vaildate($request);
-            // dd($validateUser);
-            $user = Helper::createUser($validateUser);
-            // return response()->json([
-            //                 'status' => true,
-            //                 'message' => 'User Created Successfully',
-            //                 'token' => $user->createToken("API TOKEN")->plainTextToken
-            //             ], 200);
-            Helper::createToken($user);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+
+            $validateUser = $request->validated();
+
+            $user = Student::where('email', $request->email)->first();
+            if (!$user) return response()->json(['message' => 'invalid credentials'], 422);
+            if (!Hash::check($request->password, $user->password)) return response()->json(['message' => 'password is incorrect'], 422);
+            if ($user->role!='student') return response()->json(['message' => 'unauthorize'], 422);
+            $user->tokens()->delete();
+            $token = $user->createToken($request->header('user-agent'));
+            return response()->json(['user' => $user, 'token' => $token->plainTextToken]);
+        } catch (\Throwable $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+}
+
     }
-    // public function createUser(Request $request)
-    // {
-    //     // dd($request);
-    //     try {
-    //         //Validated
-    //         $validateUser = Validator::make(
-    //             $request->all(),
-    //             [
-    //                 'name' => 'required',
-    //                 'email' => 'required|email|unique:users,email',
-    //                 'password' => 'required',
-    //                 'gender' => 'required'
 
-
-
-
-
-
-
-    //             ]
-    //         );
-
-    //         if ($validateUser->fails()) {
-    //             return response()->json([
-    //                 'status' => false,
-    //                 'message' => 'validation error',
-    //                 'errors' => $validateUser->errors()
-    //             ], 401);
-    //         }
-
-    //         // $user = User::create([
-    //         //     'name' => $request->name,
-    //         //     'gender' => $request->gender,
-    //         //     'email' => $request->email,
-    //         //     'password' => Hash::make($request->password)
-    //         // ]);
-    //         $user = Helper::createUser($request);
-
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => 'User Created Successfully',
-    //             'token' => $user->createToken("API TOKEN")->plainTextToken
-    //         ], 200);
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => $th->getMessage()
-    //         ], 500);
-    //     }
-    // }
 }

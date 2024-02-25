@@ -36,13 +36,20 @@ class User extends Authenticatable
     // ];
 
 
-    static function boot(){
-        parent::boot();
-        static::addGlobalScope('user',function(Builder $bulder){
-            $bulder->where('role','student');
-        });
+    // static function boot(){
+    //     parent::boot();
+    //     static::addGlobalScope('user',function(Builder $bulder){
+    //         $bulder->where('role','student');
+    //     });
+    // }
+    public function employee()
+    {
+        return $this->hasOne(Empolyee::class,'user_id','id');
     }
-
+    public function technicalEmployees()
+    {
+        return $this->hasOne(TechnicalEmployee::class,'user_id','id');
+    }
 
     protected $guarded=[];
     /**

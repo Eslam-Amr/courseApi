@@ -24,13 +24,11 @@ class EmployeeLoginServices
     public function login(EmployeeLoginRequest $request)
     {
         try {
-
-            $validateEmployee = $request->validated();
-
+            // $data = $request->validated();
             $employee = User::where('email', $request->email)->first();
             if (!$employee) return response()->json(['message' => 'invalid credentials'], 422);
             if (!Hash::check($request->password, $employee->password)) return response()->json(['message' => 'password is incorrect'], 422);
-            if ($employee->role != 'employee') return response()->json(['message' => 'unauthorize'], 422);
+            if ($employee->role != 'employee') return response()->json(['message' => 'unauthorize'], 401);
             if ($employee->employee == null) return response()->json(['message' => 'some things went wrong'], 422);
             $employee->tokens()->delete();
             $token = $employee->createToken($request->header('user-agent'));

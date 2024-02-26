@@ -15,7 +15,7 @@ class UserLoginServices
 {
     use GeneralTrait;
     protected $model;
-        public function __construct()
+    public function __construct()
     {
 
         $this->model = new Student();
@@ -27,17 +27,15 @@ class UserLoginServices
 
             $validateUser = $request->validated();
 
-            $user = Student::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
             if (!$user) return response()->json(['message' => 'invalid credentials'], 422);
             if (!Hash::check($request->password, $user->password)) return response()->json(['message' => 'password is incorrect'], 422);
-            if ($user->role!='student') return response()->json(['message' => 'unauthorize'], 422);
-            $user->tokens()->delete();
+            // if ($user->role != 'student') return response()->json(['message' => 'unauthorize'], 422);
+            // $user->tokens()->delete();
             $token = $user->createToken($request->header('user-agent'));
-            return response()->json(['user' => $user, 'token' => $token->plainTextToken]);
-        } catch (\Throwable $ex) {
+            return response()->json(['user' => $user, 'token' => $token->plainTextToken,'message' => $request->header()]);
+        } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
-}
-
+        }
     }
-
 }

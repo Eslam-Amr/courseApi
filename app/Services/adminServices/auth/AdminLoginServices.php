@@ -33,6 +33,7 @@ class AdminLoginServices
             if ($admin->role!='admin') return response()->json(['message' => 'unauthorize'], 422);
             $admin->tokens()->delete();
             $token = $admin->createToken($request->header('user-agent'));
+            // dd($request->header());
             return response()->json(['user' => $admin, 'token' => $token->plainTextToken]);
         } catch (\Throwable $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());

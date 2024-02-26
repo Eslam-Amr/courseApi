@@ -10,8 +10,8 @@ use App\Http\Requests\UserLoginRequest as TechnicalEmployeeLoginRequest;
 class LoginController extends Controller
 {
     //
-    public function login(TechnicalEmployeeLoginRequest $request){
-// dd($request);
-return (new TechnicalEmployeeLoginServices)->login($request);
+    public function login(TechnicalEmployeeLoginRequest $request)
+    {
+        return (new TechnicalEmployeeLoginServices)->login($request);
     }
 }

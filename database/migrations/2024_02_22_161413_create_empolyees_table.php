@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('empolyees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->float('salary');
             $table->enum('role',['employee','accountant']);
             $table->string('working_hour');
             $table->string('working_place');
 
+            // $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

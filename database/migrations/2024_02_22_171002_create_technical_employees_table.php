@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('technical_employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            // $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->float('salary');
             $table->enum('role',['instractor','mentor']);
             $table->string('number_of_group');

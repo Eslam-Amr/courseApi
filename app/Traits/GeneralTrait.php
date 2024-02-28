@@ -10,13 +10,13 @@ trait GeneralTrait
         return app()->getLocale();
     }
 
-    public function returnError($errNum, $msg)
+    public function returnError( $msg,$code)
     {
         return response()->json([
             'status' => false,
-            'errNum' => $errNum,
+            'errNum' => $code,
             'msg' => $msg
-        ]);
+        ],$code);
     }
 
 

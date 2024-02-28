@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\Category\CategoryController;
 use App\Http\Controllers\APi\admin\courseControl\AddCourseController;
 use App\Http\Controllers\Api\admin\CreateEmployeeController;
 // use App\Http\Controllers\Api\admin\LoginController as AdminLoginController;
@@ -13,7 +14,9 @@ use App\Http\Controllers\Api\auth\EditProfileController;
 use App\Http\Controllers\Api\auth\LoginController;
 // use App\Http\Controllers\Api\auth\LoginController as UserLoginController;
 use App\Http\Controllers\Api\auth\ProfileController;
-use App\Http\Controllers\Api\user\RegisterController as UserRegisterController;
+use App\Http\Controllers\Api\auth\UserRegisterController;
+use App\Http\Controllers\Api\User\Wishlist\WishlistController;
+// use App\Http\Controllers\Api\user\UserRegisterController;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,19 +45,15 @@ Route::get('/user/profile',[ProfileController::class, 'profile'])->middleware('a
 
 
 Route::post('/user/register',[UserRegisterController::class,'createUser']);
+Route::post('/user/addWishlist',[WishlistController::class,'create']);
 
 Route::post('/login',[LoginController::class,'login']);
-Route::post('/editProfile',[EditProfileController::class,'edit']);
-// Route::post('/user/login',[LoginController::class,'login']);
-// Route::post('/admin/login',[LoginController::class,'login']);
-// Route::post('/employee/login',[LoginController::class,'login']);
-// Route::post('/technicalEmployee/login',[LoginController::class,'login']);
-// Route::prefix('/admin')->middleware('auth:sanctum')->middleware('is.admin'){
+Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
-//     Route::post('/createEmployee',[CreateEmployeeController::class,'create']);
-//     Route::post('/createCourse',[AddCourseController::class,'create']);
-// }
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
     Route::post('/createEmployee', [CreateEmployeeController::class, 'create']);
     Route::post('/createCourse', [AddCourseController::class, 'create']);
+    Route::post('/createCategory', [CategoryController::class, 'create']);
+    Route::delete('/deleteCategory/{id}', [CategoryController::class, 'destroy']);
+    Route::put('/editCategory/{id}', [CategoryController::class, 'edit']);
 });

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,HasUuids;
+    use HasApiTokens, HasFactory, Notifiable;
 
 
     public function getJWTIdentifier()

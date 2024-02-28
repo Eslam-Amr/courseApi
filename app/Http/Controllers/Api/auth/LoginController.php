@@ -12,20 +12,25 @@ use App\Traits\GeneralTrait;
 class LoginController extends Controller
 {
     use GeneralTrait;
-
-    //
-    public $LoginService;
-    public function __construct(LoginServices $loginService){
-$this->LoginService=$loginService;
-    }
-    public function login(UserLoginRequest $request){
+    public function login(UserLoginRequest $request,LoginServices $LoginServices){
         try {
-        $data= (new LoginServices)->login($request);
-        // $data= $this->LoginService->login($request);
-        return $this->returnData('user',$data['user'],'success',$data['token'],200);
+            $data= $LoginServices->login($request);
+            if($data==null){
+                return $this->returnError("invalid credential",422);
+            }
+            return $this->returnData('user',$data['user'],'success',$data['token'],200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
 
         }
     }
 }
+
+// $data= (new LoginServices)->login($request);
+// $data= $this->LoginService->login($request);
+
+    //
+//     public $LoginService;
+//     public function __construct(LoginServices $loginService){
+// $this->LoginService=$loginService;
+//     }

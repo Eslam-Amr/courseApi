@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Requests\CreateEmployeeRequest;
+use App\Models\Category;
+use App\Models\CategoryCourse;
+use App\Models\Course;
 use App\Models\Empolyee;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -74,4 +78,63 @@ class Helper
         DB::commit();
 return $user;
     }
+    public static function editProfile(Request $request,$data){
+if (!is_null($request->name)) {
+    $data->name = $request->name;
+}
+
+if (!is_null($request->email)) {
+    $data->email = $request->email;
+}
+
+if (!is_null($request->password)) {
+    $data->password = Hash::make($request->password);
+}
+
+$data->save();
+// dd($data);
+// $data->save;
+}
+public static function createCourse($request){
+    $course = Course::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'price' => $request->price,
+        'discount' => $request->discount
+    ]);
+    return $course;
+}
+public static function createCourseCategory(array $request,int $courseId){
+    // for ($i=0; $i <count($request) ; $i++) {
+    //     CategoryCourse::create(['course_id'=>$courseId,'category_id'=>Category::where('name',$request[$i])]);
+    // }
+    // return $request;
+    // try {
+        // DB::beginTransaction();
+
+        foreach ($request as $categoryName) {
+            $category = Category::where('name', $categoryName)->first();
+if(Helper::checkIfCategoryDuplicate($category->id,$courseId))
+continue;
+if ($category) {
+                CategoryCourse::create([
+                    'course_id' => $courseId,
+                    'category_id' => $category->id,
+                ]);
+            }
+            // else {
+            //     throw new \Exception("Category '{$categoryName}' not found.");
+            // }
+        }
+
+    //     DB::commit();
+    // } catch (\Exception $e) {
+    //     DB::rollBack();
+    //     return response()->json(['error' => $e->getMessage()], 404);
+    // }
+}
+public static function checkIfCategoryDuplicate($categoryId,$courseId){
+    $categoryCourseId=CategoryCourse::where('course_id',$courseId)->where('category_id',$categoryId)->first();
+return ($categoryCourseId!=null);
+}
 }

@@ -16,6 +16,7 @@ class CreateEmployeeController extends Controller
     //
     public function create(CreateEmployeeRequest $request)
     {
+        // dd(auth()->user());
         return (new CreateEmployeeServices)->create($request);
 
     }

@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseCreateRequest;
 use App\Models\Course;
 use App\Services\adminServices\CourseServices\CourseServices;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class AddCourseController extends Controller
 {
+    use GeneralTrait;
     //
     /**
      * Display a listing of the resource.

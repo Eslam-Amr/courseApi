@@ -6,6 +6,7 @@ use App\Models\CategoryCourse;
 use App\Models\Course;
 use App\Models\Empolyee;
 use App\Models\User;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -104,7 +105,7 @@ public static function createCourse($request){
     ]);
     return $course;
 }
-public static function createCourseCategory(array $request,int $courseId){
+public static function createCourseCategory(array $request,$courseId){
     // for ($i=0; $i <count($request) ; $i++) {
     //     CategoryCourse::create(['course_id'=>$courseId,'category_id'=>Category::where('name',$request[$i])]);
     // }
@@ -114,13 +115,17 @@ public static function createCourseCategory(array $request,int $courseId){
 
         foreach ($request as $categoryName) {
             $category = Category::where('name', $categoryName)->first();
-if(Helper::checkIfCategoryDuplicate($category->id,$courseId))
-continue;
-if ($category) {
+            if ($category) {
+    if(Helper::checkIfCategoryDuplicate($category->id,$courseId))
+    continue;
                 CategoryCourse::create([
                     'course_id' => $courseId,
                     'category_id' => $category->id,
                 ]);
+            }
+            else
+            {
+                continue;
             }
             // else {
             //     throw new \Exception("Category '{$categoryName}' not found.");
@@ -136,5 +141,9 @@ if ($category) {
 public static function checkIfCategoryDuplicate($categoryId,$courseId){
     $categoryCourseId=CategoryCourse::where('course_id',$courseId)->where('category_id',$categoryId)->first();
 return ($categoryCourseId!=null);
+}
+public static function checkIfWishlistExists($courseId,$userId){
+    $wishlist=Wishlist::where('course_id',$courseId)->where('user_id',$userId)->first();
+return ($wishlist!=null);
 }
 }

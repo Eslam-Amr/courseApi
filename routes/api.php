@@ -45,7 +45,11 @@ Route::get('/user/profile',[ProfileController::class, 'profile'])->middleware('a
 
 
 Route::post('/user/register',[UserRegisterController::class,'createUser']);
-Route::post('/user/addWishlist',[WishlistController::class,'create']);
+Route::post('/user/wishlist/{id}',[WishlistController::class,'index'])->middleware('auth:sanctum');
+Route::post('/user/add/wishlist/{id}',[WishlistController::class,'addToWishlist'])->middleware('auth:sanctum');
+Route::delete('/user/delete/wishlist/{id}',[WishlistController::class,'destroy'])->middleware('auth:sanctum');
+// Route::post('/user/wishlist',[WishlistController::class,'index']);
+// Route::post('/user/wishlist',[WishlistController::class,'index']);
 
 Route::post('/login',[LoginController::class,'login']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');

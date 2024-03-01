@@ -5,6 +5,7 @@ use App\Models\Category;
 use App\Models\CategoryCourse;
 use App\Models\Course;
 use App\Models\Empolyee;
+use App\Models\Region;
 use App\Models\User;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
@@ -145,5 +146,11 @@ return ($categoryCourseId!=null);
 public static function checkIfWishlistExists($courseId,$userId){
     $wishlist=Wishlist::where('course_id',$courseId)->where('user_id',$userId)->first();
 return ($wishlist!=null);
+}
+public static function getRegionId(array $region){
+    $regionId=Region::select('id')->where('name',$region['name'])->where('city',$region['city'])->first();
+
+    return $regionId['id'];
+
 }
 }

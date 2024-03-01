@@ -9,4 +9,8 @@ class Course extends Model
 {
     use HasFactory;
     protected $fillable=['description','name','price','discount'];
+    public function course()
+    {
+        return $this->hasOne(Wishlist::class,'course_id','id');
+    }
 }

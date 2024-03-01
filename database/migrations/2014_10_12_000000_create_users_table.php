@@ -19,6 +19,9 @@ return new class extends Migration
             $table->date('dateOfBirth')->nullable();
             $table->enum('role',['user','student','admin','employee','technicalEmployee'])->default('student');
             $table->enum('gender',['male','female']);
+            // $table->foreignId('region_id')->constrained('regions')->cascadeOnDelete()->cascadeOnUpdate()->nullable();
+            $table->foreignId('region_id')->nullable()->constrained('regions')->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

@@ -20,20 +20,23 @@ class UserRegisterServices
 
     public function createUser(UserRegisterRequest $request)
     {
+        if($request->role=='admin')
+        return null;
         // try {
-
-            // $user = User::create([
-            //     // 'id'=>1,
-            //     'name' => $request->name,
-            //     'email' => $request->email,
-            //     'role' => 'student',
-            //     'gender' => $request->gender,
-            //     // 'image' => $request->gender,
-            //     // 'dateOfBirth' => $request->gender,
-            //     'password' => Hash::make($request->password)
-            // ]);
+$regionId=Helper::getRegionId($request['region']);
+            $user = User::create([
+                // 'id'=>1,
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => 'student',
+                'region_id' => $regionId != null ? $regionId : null,
+                'gender' => $request->gender,
+                // 'image' => $request->gender,
+                // 'dateOfBirth' => $request->gender,
+                'password' => Hash::make($request->password)
+            ]);
             // dd($user);
-$user=User::create($request->validated());
+// $user=User::create($request->validated());
 $token = $user->createToken($request->header('user-agent'));
 return ['token' => $token->plainTextToken, 'user' => $user];
             // return response()->json([

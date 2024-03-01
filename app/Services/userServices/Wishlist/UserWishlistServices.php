@@ -57,6 +57,22 @@ public function addToWishlist($courseId,$id){
 $wishlist=Wishlist::create(['course_id'=>$courseId,'user_id'=>$id]);
 return $wishlist;
 }
+public function getWishlist(){
+
+    $wishlist = Wishlist::with('course')->where('user_id', auth()->user()->id)->paginate();
+    return $wishlist;
+//     $wishlist=Wishlist::select('course_id')->where('user_id',auth()->user()->id)->paginate();
+//     $course=[];
+//     for ($i=0; $i <count($wishlist) ; $i++) {
+// $course[]=$wishlist[$i]->course;
+//     }
+// return $course;
+
+// Extracting the courses from the wishlists
+// $courses = $wishlist->pluck('course');
+
+
+}
 }
 // if (!Hash::check($request->password, $user->password)) return response()->json(['message' => 'password is incorrect'], 422);
 // if ($user == null) return response()->json(['message' => 'invalid credentials'], 422);

@@ -9,4 +9,8 @@ class Region extends Model
 {
     use HasFactory;
     protected $fillable=['name','city'];
+    // public function region()
+    // {
+    //     return $this->belongsTo(User::class,'region_id','id');
+    // }
 }

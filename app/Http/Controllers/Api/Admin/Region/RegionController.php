@@ -1,12 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Admin\Region;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\RegionRequest;
 use App\Models\Region;
+use App\Services\adminServices\RegionServices\RegionServices;
+use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
 class RegionController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      */
@@ -18,9 +23,11 @@ class RegionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+
+    public function create(RegionRequest $request,RegionServices $regionServices)
     {
         //
+        return $this->apiResponse($regionServices->create($request),'created successfully',200);
     }
 
     /**

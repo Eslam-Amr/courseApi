@@ -15,11 +15,14 @@ class EditProfileServices
 {
     use GeneralTrait;
 
-    public function edit()
+    public function edit($request)
     {
         $user = User::where('id', auth()->user()->id)->first();
         if ($user == null)
         return null;
+        $regionId=Helper::getRegionId($request->region);
+            // $user->update($request);
+            Helper::editProfile($request,$user,$regionId);
         // if (!Hash::check($request->password, $user->password))
         // return null;
         // $user->tokens()->delete();

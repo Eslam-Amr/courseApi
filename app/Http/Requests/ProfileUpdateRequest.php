@@ -25,7 +25,12 @@ class ProfileUpdateRequest extends FormRequest
             //
             'email'=>'email|unique:users,email',
             'password'=>'min:5|max:16'
-            ,'name'=>'min:3|max:12'
+            ,'name'=>'min:3|max:12',
+
+            'region' => 'array',
+            'region.name' => 'string|exists:regions,name',
+            'region.city' => 'string|exists:regions,city',
+
         ];
     }
 }

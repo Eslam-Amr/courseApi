@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\Category\CategoryController;
 use App\Http\Controllers\APi\admin\courseControl\AddCourseController;
 use App\Http\Controllers\Api\admin\CreateEmployeeController;
+use App\Http\Controllers\Api\Admin\Region\RegionController;
 // use App\Http\Controllers\Api\admin\LoginController as AdminLoginController;
 // use App\Http\Controllers\Api\employee\LoginController as EmployeeLoginController;
 // use App\Http\Controllers\Api\technicalEmployee\LoginController as TechnicalEmployeeLoginController;
@@ -16,7 +17,9 @@ use App\Http\Controllers\Api\auth\LoginController;
 use App\Http\Controllers\Api\auth\ProfileController;
 use App\Http\Controllers\Api\auth\UserRegisterController;
 use App\Http\Controllers\Api\User\Wishlist\WishlistController;
+
 // use App\Http\Controllers\Api\user\UserRegisterController;
+use App\Models\Empolyee;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,8 +60,12 @@ Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('au
 
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
     Route::post('/createEmployee', [CreateEmployeeController::class, 'create']);
+    Route::post('/createRegion', [RegionController::class, 'create']);
     Route::post('/createCourse', [AddCourseController::class, 'create']);
     Route::post('/createCategory', [CategoryController::class, 'create']);
     Route::delete('/deleteCategory/{id}', [CategoryController::class, 'destroy']);
     Route::put('/editCategory/{id}', [CategoryController::class, 'edit']);
+    Route::get('/getEmployee',function(){
+        return Empolyee::with('employee')->get();
+    });
 });

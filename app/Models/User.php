@@ -47,9 +47,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(Empolyee::class,'user_id','id');
     }
+
     public function technicalEmployees()
     {
         return $this->hasOne(TechnicalEmployee::class,'user_id','id');
+    }
+    public function region()
+    {
+        return $this->belongsTo(Region::class,'region_id','id');
     }
 
     protected $guarded=[];

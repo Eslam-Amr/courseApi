@@ -80,7 +80,7 @@ class Helper
         DB::commit();
 return $user;
     }
-    public static function editProfile(Request $request,$data){
+    public static function editProfile(Request $request,$data,$regionId){
 if (!is_null($request->name)) {
     $data->name = $request->name;
 }
@@ -91,6 +91,10 @@ if (!is_null($request->email)) {
 
 if (!is_null($request->password)) {
     $data->password = Hash::make($request->password);
+}
+
+if (!is_null($regionId)) {
+    $data->region_id = $regionId;
 }
 
 $data->save();
@@ -113,7 +117,9 @@ public static function createCourseCategory(array $request,$courseId){
     // return $request;
     // try {
         // DB::beginTransaction();
-
+        // "category":[
+        //     "test","aaaa","aaaa","sss"
+        // ]
         foreach ($request as $categoryName) {
             $category = Category::where('name', $categoryName)->first();
             if ($category) {

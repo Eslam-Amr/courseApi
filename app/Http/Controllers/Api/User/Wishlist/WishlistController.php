@@ -54,7 +54,7 @@ class WishlistController extends Controller
     public function create($courseId)
     {
         //
-        return Course::findOrFail($courseId);
+        // return Course::findOrFail($courseId);
     }
 
     /**

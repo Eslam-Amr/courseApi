@@ -13,5 +13,6 @@ class TechnicalEmployee extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $guarded=[];
-    
+    // protected $table='technical_employees';
+
 }

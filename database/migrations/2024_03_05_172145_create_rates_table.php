@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_courses', function (Blueprint $table) {
+        Schema::create('rates', function (Blueprint $table) {
+            $table->id();
+            $table->enum('rate',[0,1,2,3,4,5]);
+            $table->string('review');
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->primary(['course_id', 'category_id']);
-
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_courses');
+        Schema::dropIfExists('rates');
     }
 };

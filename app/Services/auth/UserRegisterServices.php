@@ -12,38 +12,31 @@ use Illuminate\Support\Facades\Validator;
 
 class UserRegisterServices
 {
-    protected $model;
-    public function __construct()
-    {
-        $this->model = new User();
-    }
+    // protected $model;
+    // public function __construct()
+    // {
+    //     $this->model = new User();
+    // }
 
     public function createUser(UserRegisterRequest $request)
     {
-        if($request->role=='admin')
-        return null;
+        if ($request->role == 'admin')
+            return null;
         // try {
-$regionId=Helper::getRegionId($request['region']);
-            $user = User::create([
-                // 'id'=>1,
-                'name' => $request->name,
-                'email' => $request->email,
-                'role' => 'student',
-                'region_id' => $regionId != null ? $regionId : null,
-                'gender' => $request->gender,
-                // 'image' => $request->gender,
-                // 'dateOfBirth' => $request->gender,
-                'password' => Hash::make($request->password)
-            ]);
-            // dd($user);
-// $user=User::create($request->validated());
-$token = $user->createToken($request->header('user-agent'));
-return ['token' => $token->plainTextToken, 'user' => $user];
-            // return response()->json([
-            //     'status' => true,
-            //     'message' => 'User Created Successfully',
-            //     'token' => $user->createToken("API TOKEN")->plainTextToken
-            // ], 200);
+        if (isset($request['region']))
+            $regionId = Helper::getRegionId($request['region']);
+        else
+        $regionId = null;
+        $user = Helper::createUser($request,$regionId,'student');
+        // dd($user);
+        // $user=User::create($request->validated());
+        $token = $user->createToken($request->header('user-agent'));
+        return ['token' => $token->plainTextToken, 'user' => $user];
+        // return response()->json([
+        //     'status' => true,
+        //     'message' => 'User Created Successfully',
+        //     'token' => $user->createToken("API TOKEN")->plainTextToken
+        // ], 200);
 
         // } catch (\Throwable $th) {
         //     return response()->json([
@@ -52,5 +45,4 @@ return ['token' => $token->plainTextToken, 'user' => $user];
         //     ], 500);
         // }
     }
-
 }

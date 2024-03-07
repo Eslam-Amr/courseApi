@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\APi\admin\courseControl;
+namespace App\Http\Controllers\APi\Admin\CourseControl;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseCreateRequest;
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
-use App\Services\adminServices\CourseServices\CourseServices;
+// use App\Models\Course;
+use App\Services\AdminServices\CourseServices\CourseServices;
 use App\Traits\GeneralTrait;
 use Illuminate\Http\Request;
 
-class AddCourseController extends Controller
+class CourseController extends Controller
 {
     use GeneralTrait;
     //
@@ -28,15 +30,26 @@ class AddCourseController extends Controller
     {
         // return $request['category'];
         //
-        try {
+        // try {
             // $courseServices->create($request);
             $course=$courseServices->create($request);
             return response()->json(['course'=>$course,'status'=>'success'],200);
-        } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+        // } catch (\Exception $ex) {
+        //     return $this->returnError($ex->getCode(), $ex->getMessage());
 
-        }
+        // }
     }
+    public function getSingleCourse($id){
+        // try {
+            $course=Course::with('rates.user', 'categories')->findOrFail($id);
+           return $this->apiResponse((new CourseResource($course)),'success',200);
+
+        // } catch (\Exception $ex) {
+            // return $this->returnError($ex->getCode(), $ex->getMessage());
+
+        // }
+    }
+
 
     /**
      * Store a newly created resource in storage.

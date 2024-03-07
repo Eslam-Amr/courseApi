@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\Category\CategoryController;
-use App\Http\Controllers\APi\admin\courseControl\AddCourseController;
+use App\Http\Controllers\APi\admin\courseControl\CourseController;
 use App\Http\Controllers\Api\admin\CreateEmployeeController;
 use App\Http\Controllers\Api\Admin\Region\RegionController;
 use App\Http\Controllers\Api\Admin\TechnicalEmployee\TechnicalEmployeeController;
@@ -19,7 +19,8 @@ use App\Http\Controllers\Api\auth\ProfileController;
 use App\Http\Controllers\Api\auth\UserRegisterController;
 use App\Http\Controllers\Api\User\Rate\RateController;
 use App\Http\Controllers\Api\User\Wishlist\WishlistController;
-use App\Http\Controllers\CourseController;
+use App\Http\Controllers\GroupController;
+// use App\Http\Controllers\CourseController;
 // use App\Http\Controllers\Api\user\UserRegisterController;
 use App\Models\Empolyee;
 use App\Models\Student;
@@ -69,10 +70,11 @@ Route::post('/login',[LoginController::class,'login']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
+Route::post('/createGroup/{courseId}', [GroupController::class, 'create']);
     Route::post('/createEmployee', [CreateEmployeeController::class, 'create']);
     Route::post('/createTechnicalEmployee', [TechnicalEmployeeController::class, 'create']);
     Route::post('/createRegion', [RegionController::class, 'create']);
-    Route::post('/createCourse', [AddCourseController::class, 'create']);
+    Route::post('/createCourse', [CourseController::class, 'create']);
     Route::post('/createCategory', [CategoryController::class, 'create']);
     Route::delete('/deleteCategory/{id}', [CategoryController::class, 'destroy']);
     Route::put('/editCategory/{id}', [CategoryController::class, 'edit']);

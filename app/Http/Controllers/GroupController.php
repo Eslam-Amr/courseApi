@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\CourseResource;
-use App\Models\Course;
-use App\Traits\GeneralTrait;
+use App\Http\Requests\GroupRequest;
+use App\Models\Group;
 use Illuminate\Http\Request;
 
-class CourseController extends Controller
+class GroupController extends Controller
 {
-    use GeneralTrait;
     /**
      * Display a listing of the resource.
      */
@@ -17,23 +15,14 @@ class CourseController extends Controller
     {
         //
     }
-    public function getSingleCourse($id){
-        // try {
-            $course=Course::with('rates.user', 'categories')->findOrFail($id);
-           return $this->apiResponse((new CourseResource($course)),'success',200);
 
-        // } catch (\Exception $ex) {
-            // return $this->returnError($ex->getCode(), $ex->getMessage());
-
-        // }
-    }
-    // Auth::guard("admin")
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(GroupRequest $request,$courseId)
     {
         //
+        return $courseId;
     }
 
     /**
@@ -47,7 +36,7 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show(Group $group)
     {
         //
     }
@@ -55,7 +44,7 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(Group $group)
     {
         //
     }
@@ -63,7 +52,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, Group $group)
     {
         //
     }
@@ -71,7 +60,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(Group $group)
     {
         //
     }

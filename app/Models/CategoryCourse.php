@@ -9,7 +9,7 @@ class CategoryCourse extends Model
 {
     use HasFactory;
     protected $fillable=['course_id','category_id'];
-// protected $table='category_course';
+protected $table='category_course';
 // public function category(){
 //     return $this->belongsTo(Category::class,'category_id','id');
 // }

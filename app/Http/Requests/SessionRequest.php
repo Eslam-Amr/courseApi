@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidInstructorId;
+use App\Rules\ValidMentorId;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProfileUpdateRequest extends FormRequest
+class SessionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +25,14 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             //
-            'email'=>'email|unique:users,email',
-            'password'=>'min:5|max:16'
-            ,'name'=>'min:3|max:12',
-            'regionId' => 'exists:regions,id|numeric|nullable',
+            'date'=>'required|date',
+'group_id'=>'required|exists:groups,id',
+'assignment_id'=>'required|exists:assignments,id',
+// 'instractor_id'=>'required|exists:technical_employees,id',
+'instractor_id' => ['required', new ValidInstructorId,'exists:technical_employees,id'],
 
-            // 'region' => 'array',
-            // 'region.name' => 'string|exists:regions,name',
-            // 'region.city' => 'string|exists:regions,city',
-
+'mentor_id'=> ['required', new ValidMentorId,'exists:technical_employees,id'],
+'number_of_attendance'=>'numeric',
         ];
     }
 }

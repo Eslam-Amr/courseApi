@@ -25,10 +25,15 @@ class EmployeeResource extends JsonResource
             'image' => $request->image,
             'dateOfBirth' => $request->dateOfBirth,
             'gender' => $request->gender,
-            'region' => [
-                'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
-                'name' => isset($request['region']['name']) ? $request['region']['name'] : null,
-            ]
+            // 'region' => [
+                //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
+                //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,
+                // ]
+                // 'region' => $request->region
+                // 'region' => [
+                //     'name'=>$this->user,
+                //     'city'=>$this->user
+                //     ]
         ];
     }
 }

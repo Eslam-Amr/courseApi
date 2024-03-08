@@ -22,7 +22,7 @@ class UserRegisterController extends Controller
 
     public function createUser(UserRegisterRequest $request)
     {
-        // return $request['region'];
+        // return $request;
         try {
             $data= (new UserRegisterServices)->createUser($request);
             if($data==null){

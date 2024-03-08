@@ -25,7 +25,8 @@ class CourseServices
     {
         //
         $course=Helper::createCourse($request);
-        Helper::createCourseCategory($request['category'],$course->id);
+        // Helper::createCourseCategory($request['category'],$course->id);
+        $course->categories()->syncWithoutDetaching($request['category']['id']);
         return $course;
     }
 }

@@ -28,6 +28,7 @@ class CourseController extends Controller
      */
     public function create(CourseCreateRequest $request,CourseServices $courseServices)
     {
+
         // return $request['category'];
         //
         // try {

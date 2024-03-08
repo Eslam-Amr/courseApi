@@ -30,6 +30,8 @@ class CreateTechnicalEmployeeRequest extends FormRequest
             'salary'=>'required|numeric',
             'role'=>'required',
             'number_of_group'=>'required|numeric',
+            'regionId' => 'exists:regions,id|numeric|nullable',
+
         ];
     }
 }

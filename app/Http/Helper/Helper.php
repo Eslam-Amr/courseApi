@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Validator;
 
 class Helper
 {
-    public static function createUser($request, $regionId, $role)
+    public static function createUser($request, $role)
     {
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'role' => $role,
-            'region_id' => isset($regionId) ? $regionId : null,
+            'region_id' => isset($request['regionId']) ? $request['regionId'] : null,
             'gender' => $request->gender,
             'image' => isset($request->image) ? $request->image : null,
             'dateOfBirth' => isset($request->dateOfBirth) ? $request->dateOfBirth : null,
@@ -76,11 +76,11 @@ class Helper
         DB::beginTransaction();
 
         $validateUser = $request->validated();
-        if (isset($request['region']))
-            $regionId = Helper::getRegionId($request['region']);
-        else
-            $regionId = null;
-        $user = Helper::createUser($request, $regionId, 'employee');
+        // if (isset($request['region']))
+        //     $regionId = Helper::getRegionId($request['region']);
+        // else
+        //     $regionId = null;
+        $user = Helper::createUser($request,  'employee');
         // $user = User::create([
         //     'name' => $request->name,
         //     'email' => $request->email,
@@ -103,11 +103,11 @@ class Helper
         DB::beginTransaction();
 
         // $validateUser = $request->validated();
-        if (isset($request['region']))
-            $regionId = Helper::getRegionId($request['region']);
-        else
-            $regionId = null;
-        $user = Helper::createUser($request, $regionId, 'technicalEmployee');
+        // if (isset($request['region']))
+        //     $regionId = Helper::getRegionId($request['region']);
+        // else
+        //     $regionId = null;
+        $user = Helper::createUser($request,  'technicalEmployee');
         TechnicalEmployee::create([
             'user_id' => $user->id,
             'salary' => $request->salary,
@@ -117,7 +117,7 @@ class Helper
         DB::commit();
         return $user;
     }
-    public static function editProfile(Request $request, $data, $regionId)
+    public static function editProfile(Request $request, $data)
     {
         if (!is_null($request->name)) {
             $data->name = $request->name;
@@ -131,8 +131,8 @@ class Helper
             $data->password = Hash::make($request->password);
         }
 
-        if (!is_null($regionId)) {
-            $data->region_id = $regionId;
+        if (!is_null($request->regionId)) {
+            $data->region_id = $request->regionId;
         }
 
         $data->save();
@@ -212,5 +212,19 @@ class Helper
             'review' => $request->review
         ]);
         return $rate;
+    }
+    public static function getDiffrenceInWeek($request)
+    {
+        $date1 = DateTime::createFromFormat('Y-m-d', $request['end_date']);
+        $date2 = DateTime::createFromFormat('Y-m-d', $request['start_date']);
+
+        // Check if date creation was successful
+        // Calculate the difference between the two dates
+        $interval = $date1->diff($date2);
+
+        // Accessing the difference in days
+        $diffInDays = $interval->days;
+
+        return floor($diffInDays / 7);
     }
 }

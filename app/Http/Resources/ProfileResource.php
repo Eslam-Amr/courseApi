@@ -20,10 +20,14 @@ class ProfileResource extends JsonResource
             'image' => $this->image,
             'dateOfBirth' => $this->dateOfBirth,
             'gender' => $this->gender,
-            'region' => [
-                'city' => auth()->user()->region->city,
-                'name' => auth()->user()->region->name
-            ]
+            // 'region' => [
+                //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
+                //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,
+                // ]
+                'region' => [
+                    'name'=>$this->region->name,
+                    'city'=>$this->region->city
+                    ]
         ];
       }
 }

@@ -27,7 +27,8 @@ class UserRegisterRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:5|max:16',
             'gender' => 'required',
-            'region' => 'array',
+            // 'region' => 'array',
+            'regionId' => 'exists:regions,id|numeric|nullable',
 
         ];
     }

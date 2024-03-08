@@ -23,11 +23,13 @@ class UserRegisterServices
         if ($request->role == 'admin')
             return null;
         // try {
-        if (isset($request['region']))
-            $regionId = Helper::getRegionId($request['region']);
-        else
-        $regionId = null;
-        $user = Helper::createUser($request,$regionId,'student');
+        // if (isset($request['region']))
+        //     $regionId = Helper::getRegionId($request['region']);
+        // if (isset($request['regionId']))
+        //     $regionId = Helper::getRegionId($request['region']);
+        // else
+        // $regionId = null;
+        $user = Helper::createUser($request,'student');
         // dd($user);
         // $user=User::create($request->validated());
         $token = $user->createToken($request->header('user-agent'));

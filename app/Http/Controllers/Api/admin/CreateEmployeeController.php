@@ -20,6 +20,8 @@ class CreateEmployeeController extends Controller
     //
     public function create(CreateEmployeeRequest $request,CreateEmployeeServices $createEmployeeServices)
     {
+        // $employee=Empolyee::find(18);
+        // return $employee->user->region;
         // return $request['region']['city'];
         // dd(auth()->user());
         // return (new CreateEmployeeServices)->create($request);

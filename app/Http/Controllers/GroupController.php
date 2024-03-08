@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GroupRequest;
 use App\Models\Group;
+use App\Services\AdminServices\GroupServices\GroupServices;
+use DateTime;
+use Helper;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -22,14 +25,25 @@ class GroupController extends Controller
     public function create(GroupRequest $request,$courseId)
     {
         //
-        return $courseId;
+        // return $request;
+        // return $request;
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(GroupRequest $request,$courseId,GroupServices $groupServices)
     {
+
+        try {
+
+            return $groupServices->store($request,$courseId);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
+        }
         //
     }
 

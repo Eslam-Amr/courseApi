@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\auth\UserRegisterController;
 use App\Http\Controllers\Api\User\Rate\RateController;
 use App\Http\Controllers\Api\User\Wishlist\WishlistController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\SessionController;
 // use App\Http\Controllers\CourseController;
 // use App\Http\Controllers\Api\user\UserRegisterController;
 use App\Models\Empolyee;
@@ -70,9 +71,10 @@ Route::post('/login',[LoginController::class,'login']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
-Route::post('/createGroup/{courseId}', [GroupController::class, 'create']);
+Route::post('/createGroup/{courseId}', [GroupController::class, 'store']);
     Route::post('/createEmployee', [CreateEmployeeController::class, 'create']);
     Route::post('/createTechnicalEmployee', [TechnicalEmployeeController::class, 'create']);
+    Route::post('/createSession', [SessionController::class, 'store']);
     Route::post('/createRegion', [RegionController::class, 'create']);
     Route::post('/createCourse', [CourseController::class, 'create']);
     Route::post('/createCategory', [CategoryController::class, 'create']);

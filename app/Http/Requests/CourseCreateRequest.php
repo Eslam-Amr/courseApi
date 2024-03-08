@@ -27,7 +27,8 @@ class CourseCreateRequest extends FormRequest
             'name' => 'required|min:3|max:20',
             'price' => 'required|numeric',
             'discount' => 'numeric',
-            'category' => 'required|array'
+            'category' => 'required|array',
+            'category.id' => 'required|exists:categories,id',
         ];
     }
 }

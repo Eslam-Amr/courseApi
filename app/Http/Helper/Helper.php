@@ -119,9 +119,9 @@ class Helper
     }
     public static function editProfile(Request $request, $data)
     {
-        if (!is_null($request->name)) {
-            $data->name = $request->name;
-        }
+        // if (!is_null($request->name)) {
+        //     $data->name = $request->name;
+        // }
 
         if (!is_null($request->email)) {
             $data->email = $request->email;
@@ -136,6 +136,15 @@ class Helper
         }
 
         $data->save();
+        // User::update([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => isset($request->password)? Hash::make($request->password) : $data->password
+        // ]);
+            // 'role' => $request->role,
+            // 'gender' => $request->gender,
+            // 'image' => isset($request->image)? $request->image : null,
+            // 'dateOfBirth' => isset($request->dateOfBirth)? $request->dateOfBirth : null,
         // dd($data);
         // $data->save;
     }

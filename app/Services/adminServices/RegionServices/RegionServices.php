@@ -4,6 +4,7 @@ namespace App\Services\adminServices\RegionServices;
 
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\RegionRequest;
+use App\Http\Requests\RegionUpdateRequest;
 use App\Http\Requests\UserLoginRequest as AdminLoginRequest;
 use App\Models\Admin;
 use App\Models\Empolyee;
@@ -20,7 +21,7 @@ class RegionServices
 {
     use GeneralTrait;
 
-    public function create(RegionRequest $request)
+    public function store(RegionRequest $request)
     {
         try {
 
@@ -32,5 +33,21 @@ class RegionServices
                 'message' => $th->getMessage()
             ], 500);
         }
+    }
+    public function show($RegionId){
+        return Region::findOrFail($RegionId);
+    }
+    public function index(){
+        return Region::paginate();
+    }
+    public function update($RegionId, RegionUpdateRequest $request){
+        $region=Region::findOrFail($RegionId);
+        $region->update($request->validated());
+        return $region;
+    }
+    public function destroy($RegionId){
+        $region=Region::findOrFail($RegionId);
+        $region->delete();
+        return $region;
     }
 }

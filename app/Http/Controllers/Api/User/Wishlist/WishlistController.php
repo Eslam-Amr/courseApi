@@ -23,28 +23,6 @@ class WishlistController extends Controller
         else
             $data = $this->destroy($courseId);
         return $data;
-        //         $wishlist= $userWishlistServices->index($courseId);
-        //         if($wishlist)
-        //         return  response()->json([
-        //             'status'=>'success',
-        //             'wishlist'=>$wishlist,
-        //             'forUser'=>auth()->user(),
-        //             'message'=>'added Successfully'
-        //         ]);
-        // else
-        // return response()->json([
-        //     'status'=>'success',
-        //     'message'=>'deleted Successfully'
-        // ]);
-        // return auth()->user();
-        //
-        // try {
-        //     $course = $userWishlistServices->index($courseId);
-        //     return $course;
-        // } catch (\Throwable $ex) {
-        //     return $this->returnError($ex->getCode(), $ex->getMessage());
-        // }
-        //  return Course::findOrFail($courseId);
 
     }
 

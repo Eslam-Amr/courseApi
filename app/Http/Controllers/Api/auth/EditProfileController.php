@@ -18,18 +18,18 @@ class EditProfileController extends Controller
     //     return $request;
     // }
     public function edit(EditProfileServices $editProfileServices,ProfileUpdateRequest $request){
-        // return $request->region;
-        try {
+        // return $request;
+        // try {
 
         $user= $editProfileServices->edit($request);
         // $regionId=Helper::getRegionId($request->region);
             // $user->update($request);
             // Helper::editProfile($request,$user,$regionId);
             return response()->json(['user'=>$this->apiResponse((new ProfileResource($user)),"successfully",200)]);
-        } catch (\Exception $ex) {
-            return $this->returnError($ex->getCode(), $ex->getMessage());
+        // } catch (\Exception $ex) {
+        //     return $this->returnError($ex->getCode(), $ex->getMessage());
 
-        }
+        // }
         // return response()->json(['user'=>$user]);
         // return $request;
     }

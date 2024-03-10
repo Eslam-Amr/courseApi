@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Assignment extends Model
 {
     use HasFactory;
-    protected $fillable=['course_id','user_id'];
+    protected $fillable = ['type','course_id','file','descreption','start_date','dead_line'];
 }

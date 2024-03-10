@@ -19,24 +19,28 @@ use Illuminate\Support\Facades\DB;
 class CategoryServices
 {
     use GeneralTrait;
-
-    public function create(CategoryRequest $request)
+public function index(){
+    return Category::paginate();
+}
+    public function store(CategoryRequest $request)
     {
 
-            $category=Category::create($request->validated());
-            return $category;
+        $category = Category::create($request->validated());
+        return $category;
     }
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
-return $category;
-}
-    public function edit(CategoryRequest $request,$id)
+        return $category;
+    }
+    public function update(CategoryRequest $request, $id)
     {
         $category = Category::findOrFail($id);
         $category->update($request->validated());
         return $category;
-        //
-
     }
+    public function show($categoryId){
+        return Category::findOrFail($categoryId);
+    }
+   
 }

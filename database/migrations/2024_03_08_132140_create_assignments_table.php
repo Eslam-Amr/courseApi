@@ -16,6 +16,7 @@ return new class extends Migration
             $table->enum('type',['assignment','search']);
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('file');
+            $table->string('descreption');
             $table->date('start_date');
             $table->date('dead_line');
             $table->timestamps();

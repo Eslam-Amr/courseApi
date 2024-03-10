@@ -16,15 +16,15 @@ class EmployeeResource extends JsonResource
     {
         return [
 
-            'salary' => $request->salary,
-            'role' => $request->role,
-            'working_hour' => $request->working_hour,
-            'working_place' => $request->working_place,
-            'name' => $request->name,
-            'email' => $request->email,
-            'image' => $request->image,
-            'dateOfBirth' => $request->dateOfBirth,
-            'gender' => $request->gender,
+            'salary' => $this->salary,
+            'role' => $this->role,
+            'working_hour' => $this->working_hour,
+            'working_place' => $this->working_place,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'image' => $this->user->image,
+            'dateOfBirth' => $this->user->dateOfBirth,
+            'gender' => $this->user->gender,
             // 'region' => [
                 //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
                 //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,

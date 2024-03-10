@@ -15,20 +15,31 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CategoryServices $categoryServices)
     {
         //
+        $category=$categoryServices->index();
+        try {
+
+            // return response()->json(['category'=>$category,'status'=>'success'],200);
+            return $this->apiResponse($category , 'success',200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+
+        }
+
     }
 
+
+
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created resource in storage.
      */
-    public function create(CategoryRequest $request,CategoryServices $categoryServices)
+    public function store(CategoryRequest $request,CategoryServices $categoryServices)
     {
         //
         try {
-            // $data= $LoginServices->login($request);
-            $category=$categoryServices->create($request);
+            $category=$categoryServices->store($request);
             if($category==null){
                 return $this->returnError("something went wrong",422);
             }
@@ -37,42 +48,34 @@ class CategoryController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
 
         }
-
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($categoryId , CategoryServices $categoryServices)
     {
         //
+        $category=$categoryServices->show($categoryId);
+        try {
+
+            // return response()->json(['category'=>$category,'status'=>'success'],200);
+            return $this->apiResponse($category , 'success',200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(CategoryRequest $request,$id,CategoryServices $categoryServices)
-    {
-        //
-$category=$categoryServices->edit($request,$id);
-return response()->json(['category'=>$category,'status'=>'edited success'],200);
-
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(CategoryRequest $request,$id,CategoryServices $categoryServices)
     {
-        //
+        $category=$categoryServices->update($request,$id);
+return response()->json(['category'=>$category,'status'=>'edited success'],200);
+
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\UserLoginRequest as AdminLoginRequest;
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Course;
 use App\Models\Empolyee;
 use App\Models\User;
 use Helper;
@@ -21,12 +22,18 @@ class CourseServices
 {
     use GeneralTrait;
 
-    public function create(CourseCreateRequest $request)
+    public function store(CourseCreateRequest $request)
     {
         //
         $course=Helper::createCourse($request);
         // Helper::createCourseCategory($request['category'],$course->id);
         $course->categories()->syncWithoutDetaching($request['category']['id']);
         return $course;
+    }
+    public function show($id){
+        return Course::with('rates.user', 'categories')->findOrFail($id);
+    }
+    public function index(){
+        return Course::paginate();
     }
 }

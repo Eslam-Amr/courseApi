@@ -15,4 +15,7 @@ class Group extends Model
         'max_student',
         'registered_student'
     ];
+    public function course(){
+        return $this->belongsTo(Course::class,'course_id','id');
+    }
 }

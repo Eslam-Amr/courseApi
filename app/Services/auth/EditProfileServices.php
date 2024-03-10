@@ -20,9 +20,17 @@ class EditProfileServices
         $user = User::where('id', auth()->user()->id)->first();
         if ($user == null)
         return null;
-        // $regionId=Helper::getRegionId($request->region);
+    // Helper::editProfile($request,$user);
+
+    $user->update([
+        'name' => isset($request->name)?$request->name:$user->name,
+        'email' => isset($request->email)?$request->email:$user->email,
+        'password' => isset($request->password)? Hash::make($request->password) : $user->password
+    ]);
+
+
+    // $regionId=Helper::getRegionId($request->region);
             // $user->update($request);
-            Helper::editProfile($request,$user);
         // if (!Hash::check($request->password, $user->password))
         // return null;
         // $user->tokens()->delete();

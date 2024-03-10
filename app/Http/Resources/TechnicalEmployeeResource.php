@@ -15,14 +15,14 @@ class TechnicalEmployeeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'salary' => $request->salary,
-            'role' => $request->role,
-            'number_of_group' => $request->working_hour,
-            'name' => $request->name,
-            'email' => $request->email,
-            'image' => $request->image,
-            'dateOfBirth' => $request->dateOfBirth,
-            'gender' => $request->gender,
+            'salary' => $this->salary,
+            'role' => $this->role,
+            'number_of_group' => $this->number_of_group,
+            'name' => $this->user->name,
+            'email' => $this->user->email,
+            'image' => $this->user->image,
+            'dateOfBirth' => $this->user->dateOfBirth,
+            'gender' => $this->user->gender,
             // 'region' => [
             //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
             //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,

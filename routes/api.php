@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\auth\UserRegisterController;
 use App\Http\Controllers\Api\User\Rate\RateController;
 use App\Http\Controllers\Api\User\Wishlist\WishlistController;
 use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\CourseRegistrationController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\SessionController;
 // use App\Http\Controllers\CourseController;
@@ -73,6 +74,8 @@ Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('au
 
 Route::resource('/technicalEmployee', TechnicalEmployeeController::class)->only('index','show');
 Route::resource('/region', RegionController::class)->only('index','show');
+// Route::post('/registeration/{groupId}',[CourseRegistrationController::class,'store'])->middleware('auth:sanctum');
+Route::resource('/registeration',CourseRegistrationController::class)->middleware('auth:sanctum');
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
     Route::post('/createGroup/{courseId}', [GroupController::class, 'store']);
     Route::resource('/employee', EmployeeController::class);

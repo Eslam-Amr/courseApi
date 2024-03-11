@@ -56,7 +56,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Region::class,'region_id','id');
     }
+    public function group(){
 
+        return $this->belongsToMany(Group::class);
+}
     protected $guarded=[];
     /**
      * The attributes that should be hidden for serialization.

@@ -35,11 +35,7 @@ class SessionController extends Controller
      */
     public function store(SessionRequest $request, $groupId, SessionServices $sessionServices)
     {
-        //
-        // $group=Group::find($groupId);
-        // if(!$group)
-        // return $this->returnError(404, 'Group not found');
-        //code...
+
         try {
 
             return $this->apiResponse($sessionServices->store($request, $groupId), 'success', 200);
@@ -54,10 +50,7 @@ class SessionController extends Controller
     public function show($sessionId,SessionServices $sessionServices)
     {
         $session=$sessionServices->show($sessionId);
-        // return $session;
-        // return $session->group->course;
         try {
-
             return $this->apiResponse((new SessionResource($session)), 'success', 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());

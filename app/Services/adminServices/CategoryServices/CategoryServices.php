@@ -31,6 +31,7 @@ public function index(){
     public function destroy($id)
     {
         $category = Category::findOrFail($id);
+        $category->delete();
         return $category;
     }
     public function update(CategoryRequest $request, $id)
@@ -42,5 +43,5 @@ public function index(){
     public function show($categoryId){
         return Category::findOrFail($categoryId);
     }
-   
+
 }

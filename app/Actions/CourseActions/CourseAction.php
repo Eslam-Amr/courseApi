@@ -11,9 +11,8 @@ use Helper;
 
 class CourseAction
 {
-    public function handle($groupId)
+    public function handle($groupId,$userId)
     {
-        $userId = User::select('id')->find(auth()->user()->id)['id'];
         $checkIfExists = GroupUser::where('user_id', $userId)->where('group_id', $groupId)->first();
         if ($checkIfExists)
             return 1;

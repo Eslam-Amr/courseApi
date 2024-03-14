@@ -1,6 +1,6 @@
 <?php
 // namespace App\Services;
-namespace App\Services\UserServices\CourseServices;
+namespace App\Services\AdminServices\CourseServices;
 
 use App\Http\Requests\RateRequest;
 use App\Http\Requests\UserLoginRequest;
@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
 
-class CourseRegistrationServices
+class CourseRegistrationAdminServices
 {
     use GeneralTrait;
-    public function store(Group $group,$userId)
+    public function store(Group $group)
     {
-        $user = User::find($userId);
+        $user = User::find(auth()->user()->id);
         DB::beginTransaction();
         try {
             if ($group->registered_student < $group->max_student)
@@ -35,10 +35,10 @@ class CourseRegistrationServices
         }
         return $user;
     }
-    public function destroy($groupId,$userId)
+    public function destroy($groupId)
     {
 
-        $user = User::find($userId);
+        $user = auth()->user();
         $session = GroupUser::where('group_id', $groupId)->where('user_id', $user->id)->first();
         $group = Group::findOrFail($groupId);
         if ($session) {
@@ -55,15 +55,14 @@ class CourseRegistrationServices
         }
         return null;
     }
-    public function index($userId)
+    public function index()
     {
-        $user=User::find($userId);
-        return $user->group()->paginate();
+        return auth()->user()->group()->paginate();
     }
-    public function show($groupId,$userId)
+    public function show($groupId)
     {
 
-        return GroupUser::where('group_id', $groupId)->where('user_id', $userId)->first();
+        return GroupUser::where('group_id', $groupId)->where('user_id', auth()->user()->id)->first();
     }
 }
 

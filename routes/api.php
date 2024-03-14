@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\Category\CategoryController;
+use App\Http\Controllers\Api\Admin\CourseControl\AdminCourseRegistration;
 use App\Http\Controllers\APi\admin\courseControl\CourseController;
 use App\Http\Controllers\Api\admin\EmployeeController;
 use App\Http\Controllers\Api\Admin\Region\RegionController;
@@ -20,12 +21,16 @@ use App\Http\Controllers\Api\auth\UserRegisterController;
 use App\Http\Controllers\Api\User\Rate\RateController;
 use App\Http\Controllers\Api\User\Wishlist\WishlistController;
 use App\Http\Controllers\AssignmentController;
-use App\Http\Controllers\CourseRegistrationController;
+use App\Http\Controllers\Api\User\CourseRegister\CourseRegistrationController;
+use App\Http\Controllers\AssignmentSolutionController;
+use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\GroupTechnicalEmployeeController;
 use App\Http\Controllers\SessionController;
 // use App\Http\Controllers\CourseController;
 // use App\Http\Controllers\Api\user\UserRegisterController;
 use App\Models\Empolyee;
+use App\Models\GroupTechnicalEmployee;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,10 +47,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function () {
-    // return $request->user();
-    return  Student::get();
-});
+// Route::get('/user', function () {
+//     // return $request->user();
+//     return  Student::get();
+// });
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -75,28 +80,27 @@ Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('au
 Route::resource('/technicalEmployee', TechnicalEmployeeController::class)->only('index','show');
 Route::resource('/region', RegionController::class)->only('index','show');
 // Route::post('/registeration/{groupId}',[CourseRegistrationController::class,'store'])->middleware('auth:sanctum');
+Route::resource('/assignment',AssignmentSolutionController::class)->middleware('auth:sanctum');
 Route::resource('/registeration',CourseRegistrationController::class)->middleware('auth:sanctum');
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
+    Route::resource('/technicalEmployeeGroups', GroupTechnicalEmployeeController::class);
     Route::post('/createGroup/{courseId}', [GroupController::class, 'store']);
     Route::resource('/employee', EmployeeController::class);
     Route::resource('/technicalEmployee', TechnicalEmployeeController::class);
+    Route::resource('/registeration',AdminCourseRegistration::class);
     Route::resource('/assignment', AssignmentController::class);
     Route::post('/createSession/{groupId}', [SessionController::class, 'store']);
     Route::put('/updateSession/{sessionId}', [SessionController::class, 'update']);
     Route::delete('/deleteSession/{sessionId}', [SessionController::class, 'destroy']);
     Route::get('/showSession/{sessionId}', [SessionController::class, 'show']);
     Route::get('/session', [SessionController::class, 'index']);
-    // Route::post('/createRegion', [RegionController::class, 'create']);
     Route::resource('/region',RegionController::class);
+    Route::resource('/attendances',AttendancesController::class);
     Route::post('/createCourse', [CourseController::class, 'store']);
-    // Route::post('/createCategory', [CategoryController::class, 'store']);
-    // Route::delete('/deleteCategory/{id}', [CategoryController::class, 'destroy']);
-    // Route::put('/editCategory/{id}', [CategoryController::class, 'update']);
-    // Route::get('/category', [CategoryController::class, 'index']);
-    // Route::get('/showCategory/{id}', [CategoryController::class, 'show']);
+
     Route::resource('/category', CategoryController::class);
 
-    Route::get('/getEmployee',function(){
-        return Empolyee::with('employee')->get();
-    });
+    // Route::get('/getEmployee',function(){
+    //     return Empolyee::with('employee')->get();
+    // });
 });

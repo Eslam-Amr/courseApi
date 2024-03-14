@@ -89,8 +89,7 @@ return response()->json(['category'=>$category,'status'=>'edited success'],200);
             if($category==null){
                 return $this->returnError(" something went wrong",422);
             }
-            $category->delete();
-            return response()->json(['category'=>$category,'status'=>'deleted success'],200);
+            return $this->apiResponse($category,'deleted success',200);
 
 
     }

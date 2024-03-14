@@ -24,7 +24,7 @@ class CourseController extends Controller
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
-  
+
     /**
      * Store a newly created resource in storage.
      */
@@ -54,14 +54,6 @@ class CourseController extends Controller
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Course $course)
-    {
-        //
     }
 
     /**

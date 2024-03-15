@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GroupRequest;
 use App\Models\Group;
 use App\Services\AdminServices\GroupServices\GroupServices;
+use App\Traits\GeneralTrait;
 use DateTime;
 use Helper;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
+    use GeneralTrait;
     /**
      * Display a listing of the resource.
      */
@@ -19,25 +21,17 @@ class GroupController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(GroupRequest $request,$courseId)
-    {
-        //
-        // return $request;
-        // return $request;
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(GroupRequest $request,$courseId,GroupServices $groupServices)
+    public function store(GroupRequest $request,GroupServices $groupServices)
     {
-
+$group=$groupServices->store($request);
         try {
 
-            return $groupServices->store($request,$courseId);
+            return $this->apiResponse($group,'success',200);
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -50,18 +44,17 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show($groupId,GroupServices $groupServices)
     {
-        //
+        $group=$groupServices->show($groupId);
+        try {
+            return $this->apiResponse($group, 'success', 200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Group $group)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -74,8 +67,13 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy($groupId ,GroupServices $groupServices)
     {
-        //
+        $group=$groupServices->destroy($groupId);
+        try {
+            return $this->apiResponse($group, 'deleted successfuly', 200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
     }
 }

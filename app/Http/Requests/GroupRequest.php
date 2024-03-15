@@ -40,6 +40,7 @@ class GroupRequest extends FormRequest
         return [
             //
             'max_student' => 'required|numeric|min:1',
+            'course_id' => 'required|exists:courses,id',
             // 'registered_student' => 'required|numeric|min:0|lte:max_student', // Ensure registered_student is less than max_student ,
             'name' => 'required|min:3|max:12|unique:groups,name',
             // 'start_date' => 'required|date|before:end_date',

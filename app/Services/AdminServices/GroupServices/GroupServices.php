@@ -23,11 +23,11 @@ class GroupServices
 {
     use GeneralTrait;
 
-    public function store(GroupRequest $request,$courseId)
+    public function store(GroupRequest $request)
     {
         // try {
 
-            $Group = Group::create(array_merge($request->validated(), ['course_id' => $courseId,'registered_student' => 0]));
+            $Group = Group::create(array_merge($request->validated(), ['registered_student' => 0]));
             // $session=(new GroupAction)->handle($Group);
             (new GroupAction)->handle($Group,$request);
             return $Group;
@@ -37,6 +37,15 @@ class GroupServices
         //         'message' => $th->getMessage()
         //     ], 500);
         // }
+    }
+    public function show($groupId){
+        $group=Group::findOrFail($groupId);
+        return $group;
+    }
+    public function destroy($groupId){
+        $group=Group::findOrFail($groupId);
+        $group->delete();
+        return $group;
     }
 
 }

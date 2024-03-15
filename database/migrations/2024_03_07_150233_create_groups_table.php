@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->integer('max_student');
-            $table->integer('registered_student');
+            $table->integer('registered_student')->default(0);
             $table->string('name');
             $table->date('start_date');
             $table->date('end_date');

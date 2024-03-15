@@ -78,7 +78,7 @@ Route::delete('/user/rate/{id}',[RateController::class,'destroy'])->middleware('
 Route::post('/login',[LoginController::class,'login']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
-Route::resource('/progress', ProgressController::class)->middleware('auth:sanctum');
+// Route::resource('/progress', ProgressController::class)->middleware('auth:sanctum');
 Route::resource('/technicalEmployee', TechnicalEmployeeController::class)->only('index','show');
 Route::resource('/region', RegionController::class)->only('index','show');
 // Route::post('/registeration/{groupId}',[CourseRegistrationController::class,'store'])->middleware('auth:sanctum');
@@ -86,7 +86,8 @@ Route::resource('/assignment',AssignmentSolutionController::class)->middleware('
 Route::resource('/registeration',CourseRegistrationController::class)->middleware('auth:sanctum');
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
     Route::resource('/technicalEmployeeGroups', GroupTechnicalEmployeeController::class);
-    Route::post('/createGroup/{courseId}', [GroupController::class, 'store']);
+    // Route::post('/createGroup', [GroupController::class, 'store']);
+    Route::resource('/group', GroupController::class);
     Route::resource('/employee', EmployeeController::class);
     Route::resource('/technicalEmployee', TechnicalEmployeeController::class);
     Route::resource('/registeration',AdminCourseRegistration::class);

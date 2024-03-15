@@ -26,11 +26,11 @@ class SessionServices
 return Session::paginate();
 
     }
-    public function store(SessionRequest $request, $groupId)
+    public function store(SessionRequest $request)
     {
 
         // try {
-        $session = Session::create(array_merge($request->validated(), ['group_id' => $groupId]));
+        $session = Session::create($request->validated());
         return $session;
         // } catch (\Throwable $th) {
         //     return response()->json([

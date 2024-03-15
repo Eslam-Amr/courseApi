@@ -17,7 +17,7 @@ class CourseRegistrationController extends Controller
     use GeneralTrait;
     public function store(CourseRegistrationRequest $request, CourseRegistrationServices $courseRegistrationServices, CourseAction $courseAction)
     {
-        $group = Group::select('max_student', 'registered_student', 'id')->findOrFail($request->group_id);
+        $group = Group::select('max_student', 'registered_student', 'id','course_id')->findOrFail($request->group_id);
         if ($courseAction->handle($group->id,auth()->user()->id))
             return $this->apiResponse('null', 'this course already registered', 302);
         if ($group['max_student'] == $group['registered_student'])

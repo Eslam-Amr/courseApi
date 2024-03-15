@@ -24,21 +24,14 @@ class SessionRequest extends FormRequest
      */
     public function rules(): array
     {
-        $groupId = $this->route('groupId');
+        $groupId = $this->input('group_id');
 
         return [
             //
             'date' =>  [
                 'required',
                 'date',
-                // function ($attribute, $value, $fail) {
-                //     $group = Group::select('start_date', 'end_date')->findOrFail($this->input('group_id'));
-                //     $startDate = $group->start_date;
-                //     $endDate = $group->end_date;
-                //     if ($value < $startDate || $value > $endDate) {
-                //         $fail("The date must be within the start and end date of the group.");
-                //     }
-                // },
+
                 function ($attribute, $value, $fail) use ($groupId) {
                     $group = Group::select('start_date', 'end_date')->findOrFail($groupId);
                     $startDate = $group->start_date;
@@ -48,7 +41,7 @@ class SessionRequest extends FormRequest
                     }
                 },
             ],
-            // 'group_id' => 'required|exists:groups,id',
+            'group_id' => 'required|exists:groups,id',
             'assignment_id' => 'required|exists:assignments,id',
             // 'instractor_id'=>'required|exists:technical_employees,id',
             'instractor_id' => ['required', new ValidInstructorId, 'exists:technical_employees,id'],

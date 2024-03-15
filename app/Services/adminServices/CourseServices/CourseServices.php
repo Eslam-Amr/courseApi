@@ -4,6 +4,7 @@ namespace App\Services\adminServices\CourseServices;
 
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\CourseCreateRequest;
+use App\Http\Requests\CourseUpdateRequest;
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\UserLoginRequest as AdminLoginRequest;
 use App\Models\Admin;
@@ -27,7 +28,7 @@ class CourseServices
         //
         $course=Helper::createCourse($request);
         // Helper::createCourseCategory($request['category'],$course->id);
-        $course->categories()->syncWithoutDetaching($request['category']['id']);
+        $course->categories()->syncWithoutDetaching($request['category_id']);
         return $course;
     }
     public function show($id){
@@ -36,4 +37,18 @@ class CourseServices
     public function index(){
         return Course::paginate();
     }
+    public function destroy($id){
+        $course=Course::findOrFail($id);
+        $course->delete();
+        return $course;
+    }
+    public function update(CourseUpdateRequest $request, $id)
+            {
+                $course = Course::findOrFail($id);
+                $course->update($request->validated());
+                if ($request->has('category_id'))
+        $course->categories()->sync($request['category_id']);
+
+                return $course;
+            }
 }

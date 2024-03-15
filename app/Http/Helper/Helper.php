@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CategoryCourse;
 use App\Models\Course;
 use App\Models\Empolyee;
+use App\Models\Group;
 use App\Models\Rate;
 use App\Models\Region;
 use App\Models\TechnicalEmployee;
@@ -141,10 +142,10 @@ class Helper
         //     'email' => $request->email,
         //     'password' => isset($request->password)? Hash::make($request->password) : $data->password
         // ]);
-            // 'role' => $request->role,
-            // 'gender' => $request->gender,
-            // 'image' => isset($request->image)? $request->image : null,
-            // 'dateOfBirth' => isset($request->dateOfBirth)? $request->dateOfBirth : null,
+        // 'role' => $request->role,
+        // 'gender' => $request->gender,
+        // 'image' => isset($request->image)? $request->image : null,
+        // 'dateOfBirth' => isset($request->dateOfBirth)? $request->dateOfBirth : null,
         // dd($data);
         // $data->save;
     }
@@ -235,5 +236,37 @@ class Helper
         $diffInDays = $interval->days;
 
         return floor($diffInDays / 7);
+    }
+    public static function attendanceAvg($groupId)
+    {
+        $count = Group::findOrFail($groupId)->session->count();
+        $user_id = auth()->user()->id;
+
+        $sessionsWithAttendances = Group::findOrFail($groupId)
+            ->session()
+            ->whereHas('attendances', function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })
+            ->with(['attendances' => function ($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            }])
+            ->get();
+
+        // $evaluations = [];
+        $sum = 0;
+        foreach ($sessionsWithAttendances as $session) {
+            foreach ($session->attendances as $attendance) {
+                // $evaluations[] = $attendance->evaluation;
+                $sum += $attendance->evaluation;
+            }
+        }
+        $AVG = 0;
+        try {
+            $AVG = $sum / $count;
+        } catch (\Throwable $th) {
+            $AVG = 0;
+            //throw $th;
+        }
+        return $AVG;
     }
 }

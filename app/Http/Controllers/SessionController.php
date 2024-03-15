@@ -33,12 +33,13 @@ class SessionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SessionRequest $request, $groupId, SessionServices $sessionServices)
+    public function store(SessionRequest $request, SessionServices $sessionServices)
     {
-
+        // return $request;
+$session=$sessionServices->store($request);
         try {
 
-            return $this->apiResponse($sessionServices->store($request, $groupId), 'success', 200);
+            return $this->apiResponse($session, 'success', 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }

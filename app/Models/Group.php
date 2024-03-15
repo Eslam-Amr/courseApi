@@ -18,4 +18,10 @@ class Group extends Model
     public function course(){
         return $this->belongsTo(Course::class,'course_id','id');
     }
+    public function session(){
+        return $this->hasMany(Session::class);
+    }
+    public function assignment(){
+        return $this->hasMany(Assignment::class);
+    }
 }

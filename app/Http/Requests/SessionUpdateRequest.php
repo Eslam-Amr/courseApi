@@ -25,7 +25,7 @@ class SessionUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        $sessionId = $this->route('sessionId');
+        $sessionId = $this->route('session');
         $groupId=Session::select('group_id')->findOrFail($sessionId);
         $group = Group::select('start_date','end_date')->findOrFail($groupId)[0];
 

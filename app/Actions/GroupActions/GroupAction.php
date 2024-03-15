@@ -2,7 +2,9 @@
 
 namespace App\Actions\GroupActions;
 
+use App\Models\Attendances;
 use App\Models\Group;
+use App\Models\GroupUser;
 use App\Models\Session;
 use DateTime;
 use Helper;
@@ -13,8 +15,9 @@ class GroupAction
     {
         $numberOfWeeks = Helper::getDiffrenceInWeek($request);
         $startDate = new DateTime($request['start_date']);
+
         for ($i = 0; $i < $numberOfWeeks; $i++) {
-            Session::create([
+        Session::create([
                 'date' => $startDate,
                 'group_id' => $group['id']
             ]);

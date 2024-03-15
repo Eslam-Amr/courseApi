@@ -21,7 +21,19 @@ class Session extends Model
 
         return $this->belongsTo(Group::class,'group_id','id');
     }
+    // public function assignment(){
+    //     return $this->hasOne(Assignment::class,'assignment_id','id');
+    // }
     public function assignment(){
         return $this->belongsTo(Assignment::class,'assignment_id','id');
     }
+    public function attendance()
+    {
+        return $this->belongsToMany(Attendances::class, 'Attendances');
+    }
+    public function attendances()
+    {
+        return $this->hasMany(Attendances::class, 'session_id', 'id');
+    }
+   
 }

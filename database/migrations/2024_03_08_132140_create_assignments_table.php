@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('type',['assignment','search']);
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('group_id')->constrained('groups')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('file');
             $table->string('descreption');
             $table->date('start_date');

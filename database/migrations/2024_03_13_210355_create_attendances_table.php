@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('session_id')->constrained('sessions')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->float('evaluation')->default(0);
             $table->timestamps();
         });
     }

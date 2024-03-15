@@ -4,6 +4,7 @@ namespace App\Http\Controllers\APi\Admin\CourseControl;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseCreateRequest;
+use App\Http\Requests\CourseUpdateRequest;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 // use App\Models\Course;
@@ -56,19 +57,29 @@ class CourseController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Course $course)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy($id,CourseServices $courseServices)
     {
         //
+        $course=$courseServices->destroy($id);
+            try {
+                return $this->apiResponse($course,'success',200);
+            } catch (\Exception $ex) {
+                return $this->returnError($ex->getCode(), $ex->getMessage());
+            }
+    }
+    public function update($id,CourseServices $courseServices,CourseUpdateRequest $request){
+        // return $id;
+
+        $course=$courseServices->update($request,$id);
+        try {
+            return $this->apiResponse($course,'successfully',200);
+        }  catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
     }
 }

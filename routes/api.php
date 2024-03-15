@@ -26,6 +26,7 @@ use App\Http\Controllers\AssignmentSolutionController;
 use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupTechnicalEmployeeController;
+use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\SessionController;
 // use App\Http\Controllers\CourseController;
 // use App\Http\Controllers\Api\user\UserRegisterController;
@@ -77,6 +78,7 @@ Route::delete('/user/rate/{id}',[RateController::class,'destroy'])->middleware('
 Route::post('/login',[LoginController::class,'login']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
+Route::resource('/progress', ProgressController::class)->middleware('auth:sanctum');
 Route::resource('/technicalEmployee', TechnicalEmployeeController::class)->only('index','show');
 Route::resource('/region', RegionController::class)->only('index','show');
 // Route::post('/registeration/{groupId}',[CourseRegistrationController::class,'store'])->middleware('auth:sanctum');
@@ -89,14 +91,15 @@ Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(functio
     Route::resource('/technicalEmployee', TechnicalEmployeeController::class);
     Route::resource('/registeration',AdminCourseRegistration::class);
     Route::resource('/assignment', AssignmentController::class);
-    Route::post('/createSession/{groupId}', [SessionController::class, 'store']);
-    Route::put('/updateSession/{sessionId}', [SessionController::class, 'update']);
-    Route::delete('/deleteSession/{sessionId}', [SessionController::class, 'destroy']);
-    Route::get('/showSession/{sessionId}', [SessionController::class, 'show']);
-    Route::get('/session', [SessionController::class, 'index']);
+    Route::resource('/session', SessionController::class);
+    // Route::post('/createSession', [SessionController::class, 'store']);
+    // Route::put('/updateSession/{sessionId}', [SessionController::class, 'update']);
+    // Route::delete('/deleteSession/{sessionId}', [SessionController::class, 'destroy']);
+    // Route::get('/showSession/{sessionId}', [SessionController::class, 'show']);
+    // Route::get('/session', [SessionController::class, 'index']);
     Route::resource('/region',RegionController::class);
     Route::resource('/attendances',AttendancesController::class);
-    Route::post('/createCourse', [CourseController::class, 'store']);
+    Route::resource('/course', CourseController::class);
 
     Route::resource('/category', CategoryController::class);
 

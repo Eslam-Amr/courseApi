@@ -5,6 +5,8 @@ namespace App\Services\UserServices\CourseServices;
 use App\Http\Requests\RateRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Models\Admin;
+use App\Models\Assignment;
+use App\Models\Attendances;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\GroupUser;
@@ -24,6 +26,27 @@ class CourseRegistrationServices
     public function store(Group $group,$userId)
     {
         $user = User::find($userId);
+    // $sessions=$group->session;
+    // dd($group->id);
+    // $assignments=$group->assignment;
+    // foreach ($sessions as $session){
+    //     $attendances = new Attendances();
+    //     $attendances->user_id = $user->id;
+    //     $attendances->session_id = $session->id;
+    //     $attendances->save();
+    // }
+    // foreach ($assignments as $assignment){
+    //     AssignmentSol::create([
+    //         'assignment_id' => $assignment->id,
+    //         'user_id' => $user->id,
+    //         'file' => '',
+    //         'descreption' => '',
+    //         'group_id' => $group->id,
+    //         'course_id' => $group->course_id,
+    //         'start_date' => $group->course_id,
+    //         'course_id' => $group->course_id,
+    //     ]);
+    // }
         DB::beginTransaction();
         try {
             if ($group->registered_student < $group->max_student)

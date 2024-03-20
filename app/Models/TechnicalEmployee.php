@@ -15,10 +15,10 @@ class TechnicalEmployee extends Model
     protected $guarded=[];
     // protected $table='technical_employees';
     public function user(){
-        return $this->belongsTo(User::class,'user_id','id');
+        return $this->belongsTo(User::class);
     }
     public function group(){
         return $this->belongsToMany(Group::class);
     }
-   
+
 }

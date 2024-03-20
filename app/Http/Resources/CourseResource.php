@@ -14,27 +14,47 @@ class CourseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // dd($request,$this[0]);
+        // dd($request,$this->id);
+//         var_dump($this->course->price - ($this->course->price * ($this->course->discount / 100)));
+// die;
+        // dd($this->course->price - ($this->course->price * ($this->course->discount / 100)));
         return [
-            'description'=>$this->description ?? null,
-            'name'=>$this->name ?? null,
-            'price'=>$this->price ??null,
-            'discount'=>$this->discount??null,
+            'id' => $this->id,
+            'description' => $this->description ?? null,
+            'name' => $this->name ?? null,
+            'price' => $this->price ?? null,
+            'discount' => $this->discount ?? null,
+            'course_price_after_discount' => $this->price - ($this->price * ($this->discount / 100)),
+            // 'rates' => $this->rates,
+            'rates' => $this->formatRates($this->rates)??null,
+            'average_rate' => $this->calculateAverageRate($this->rates),
 
-            'rates' => $this->rates,
-            // 'rates' => $this->formatRates($this->rates)??null,
-
-'categories' => $this->categories->pluck('name')??null
+            'categories' => $this->categories->pluck('name') ?? null
         ];
     }
     private function formatRates($rates)
     {
         return $rates->map(function ($rate) {
             return [
-                'userName' => $rate->user->name??null,
-                'rate' => $rate->rate??null,
-                'review' => $rate->review??null,
+                'userName' => $rate->user->name ?? null,
+                'rate' => $rate->rate ?? null,
+                'review' => $rate->review ?? null,
             ];
         });
     }
+    private function calculateAverageRate($rates)
+    {
+        if ($rates->isEmpty()) {
+            return 0;
+        }
+
+        $totalRate = $rates->sum('rate');
+        $count = $rates->count();
+if($count !== 0)
+$avgRate=$totalRate / $count;
+else
+$avgRate=0;
+return $avgRate==null? 0 : $avgRate;
+    }
+
 }

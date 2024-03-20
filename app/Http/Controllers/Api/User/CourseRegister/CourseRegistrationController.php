@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api\User\CourseRegister;
 use App\Actions\CourseActions\CourseAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRegistrationRequest;
+use App\Http\Resources\GroupCollection;
+use App\Http\Resources\GroupResource;
+use App\Http\Resources\UserResource;
 use App\Models\Group;
 use App\Models\User;
 use App\Services\UserServices\CourseServices\CourseRegistrationServices;
@@ -19,18 +22,18 @@ class CourseRegistrationController extends Controller
     {
         $group = Group::select('max_student', 'registered_student', 'id','course_id')->findOrFail($request->group_id);
         if ($courseAction->handle($group->id,auth()->user()->id))
-            return $this->apiResponse('null', 'this course already registered', 302);
+            return $this->apiResponse('', __('response/response_message.already_registered'), 302);
         if ($group['max_student'] == $group['registered_student'])
-            return $this->apiResponse('null', 'no place to register in ', 302);
+            return $this->apiResponse('', __('response/response_message.already_complete') , 302);
         $user = $courseRegistrationServices->store($group,auth()->user()->id);
-        return $this->apiResponse($user, 'success', 200);
+        return $this->apiResponse(UserResource::make($user),  __('response/response_message.created_success'), 200);
     }
     public function destroy($groupId, CourseRegistrationServices $courseRegistrationServices)
     {
         $session = $courseRegistrationServices->destroy($groupId,auth()->user()->id);
         if ($session == null)
-            return $this->apiResponse('null', 'already deleted successfuly', 200);
-        return $this->apiResponse('null', 'deleted successfuly', 200);
+            return $this->apiResponse('null', __('response/response_message.already_deleted_success'), 200);
+        return $this->apiResponse('null',  __('response/response_message.deleted_success'), 200);
 
         // } catch (\Exception $ex) {
         //     return $this->returnError($ex->getCode(), $ex->getMessage());
@@ -41,7 +44,8 @@ class CourseRegistrationController extends Controller
         $groups = $courseRegistrationServices->index(auth()->user()->id);
         try {
 
-            return $this->apiResponse($groups, 'success', 200);
+            return $this->apiResponse(GroupCollection::make($groups), __('response/response_message.data_retrieved'), 200);
+            // return $groups;
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -50,7 +54,7 @@ class CourseRegistrationController extends Controller
     {
         $group = $courseRegistrationServices->show($groupId,auth()->user()->id);
         try {
-            return $this->apiResponse($group, 'success', 200);
+            return $this->apiResponse(GroupResource::make($group),  __('response/response_message.created_success'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }

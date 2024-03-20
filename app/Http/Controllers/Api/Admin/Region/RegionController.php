@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Admin\Region;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegionRequest;
 use App\Http\Requests\RegionUpdateRequest;
+use App\Http\Resources\RegionCollection;
+use App\Http\Resources\RegionResource;
 use App\Models\Region;
 use App\Services\adminServices\RegionServices\RegionServices;
 use App\Traits\GeneralTrait;
@@ -21,7 +23,7 @@ class RegionController extends Controller
         //
         $region = $regionServices->index();
         try {
-            return $this->apiResponse($region, 'success', 200);
+            return $this->apiResponse(RegionCollection::make($region),__('response/response_message.data_retrieved'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -34,7 +36,8 @@ class RegionController extends Controller
     public function store(RegionRequest $request, RegionServices $regionServices)
     {
         //
-        return $this->apiResponse($regionServices->store($request), 'created successfully', 200);
+        $region=$regionServices->store($request);
+        return $this->apiResponse(RegionResource::make($region), __('response/response_message.created_success'), 200);
     }
 
     /**
@@ -47,7 +50,7 @@ class RegionController extends Controller
         try {
 
             // return response()->json(['category'=>$category,'status'=>'success'],200);
-            return $this->apiResponse($region, 'success', 200);
+            return $this->apiResponse(RegionResource::make($region), __('response/response_message.data_retrieved'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -65,7 +68,9 @@ class RegionController extends Controller
         try {
 
             // return response()->json(['category'=>$category,'status'=>'success'],200);
-            return $this->apiResponse($region, 'success', 200);
+            // return $this->apiResponse($region, 'success', 200);
+        return $this->apiResponse(RegionResource::make($region), __('response/response_message.updated_success'), 200);
+
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -79,7 +84,9 @@ class RegionController extends Controller
         //
         $region = $regionServices->destroy($regionId);
         try {
-            return $this->apiResponse($region, 'deleted successfully', 200);
+            // return $this->apiResponse($region, 'deleted successfully', 200);
+        return $this->apiResponse(RegionResource::make($region), __('response/response_message.deleted_success'), 200);
+
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }

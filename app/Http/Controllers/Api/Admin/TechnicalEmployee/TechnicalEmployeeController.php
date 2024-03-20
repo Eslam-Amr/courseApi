@@ -7,6 +7,7 @@ use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\CreateTechnicalEmployeeRequest;
 use App\Http\Requests\TechnicalEmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
+use App\Http\Resources\TechnicalEmployeeCollection;
 use App\Http\Resources\TechnicalEmployeeResource;
 use App\Models\TechnicalEmployee;
 use App\Services\adminServices\employeeControl\CreateEmployeeServices;
@@ -20,20 +21,22 @@ class TechnicalEmployeeController extends Controller
     use GeneralTrait;
     public function store(CreateTechnicalEmployeeRequest $request,TechnicalEmployeeServices $technicalEmployeeServices)
     {
-        try {
-            $user=$technicalEmployeeServices->store($request);
-            return $this->apiResponse((new TechnicalEmployeeResource($user)),'successfully',200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+        // try {
+            $employee=$technicalEmployeeServices->store($request);
+        // dd($employee->user);
+
+            return $this->apiResponse((TechnicalEmployeeResource::make($employee)),__('response/response_message.created_success'),200);
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => $th->getMessage()
+        //     ], 500);
+        // }
     }
     public function index(TechnicalEmployeeServices $technicalEmployeeServices){
         $technicalEmployee = $technicalEmployeeServices->index();
         try {
-            return $this->apiResponse($technicalEmployee, 'success', 200);
+            return $this->apiResponse(TechnicalEmployeeCollection::make($technicalEmployee), __('response/response_message.data_retrieved'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -43,7 +46,7 @@ class TechnicalEmployeeController extends Controller
 
         $user=$technicalEmployeeServices->update($request,$id);
         try {
-            return $this->apiResponse((new TechnicalEmployeeResource($user)),'successfully',200);
+            return $this->apiResponse((TechnicalEmployeeResource::make($user)),__('response/response_message.updated_success'),200);
         }  catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -51,7 +54,7 @@ class TechnicalEmployeeController extends Controller
     public function show($id,TechnicalEmployeeServices $technicalEmployeeServices){
         $user=$technicalEmployeeServices->show($id);
         try {
-            return $this->apiResponse((new TechnicalEmployeeResource($user)),'success',200);
+            return $this->apiResponse((new TechnicalEmployeeResource($user)),__('response/response_message.data_retrieved'),200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -59,7 +62,7 @@ class TechnicalEmployeeController extends Controller
     public function destroy($id,TechnicalEmployeeServices $technicalEmployeeServices){
         $user=$technicalEmployeeServices->destroy($id);
         try {
-            return $this->apiResponse((new TechnicalEmployeeResource($user)),'success',200);
+            return $this->apiResponse((TechnicalEmployeeResource::make($user)),__('response/response_message.deleted_success'),200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }

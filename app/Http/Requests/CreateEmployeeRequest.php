@@ -31,7 +31,7 @@ class CreateEmployeeRequest extends FormRequest
             'role'=>'required',
             'working_hour'=>'required|numeric',
             'working_place'=>'required',
-            'regionId' => 'exists:regions,id|numeric|nullable',
+            'region_id' => 'exists:regions,id|numeric|nullable',
 
         ];
     }

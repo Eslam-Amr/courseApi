@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Admin\Category;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\adminServices\CategoryServices\CategoryServices;
 use App\Traits\GeneralTrait;
@@ -19,10 +21,14 @@ class CategoryController extends Controller
     {
         //
         $category=$categoryServices->index();
+        // dd($category);
         try {
 
             // return response()->json(['category'=>$category,'status'=>'success'],200);
-            return $this->apiResponse($category , 'success',200);
+            // return $this->apiResponse($category , 'success',200);
+            return $this->apiResponse(CategoryCollection::make($category) ,__('response/response_message.data_retrieved') ,200);
+
+            // return $this->apiResponse(CategoryResource::make($category) ,__('response/response_message.created_success') ,200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
 
@@ -38,12 +44,14 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request,CategoryServices $categoryServices)
     {
         //
+        $category=$categoryServices->store($request);
         try {
-            $category=$categoryServices->store($request);
-            if($category==null){
-                return $this->returnError("something went wrong",422);
-            }
-            return response()->json(['category'=>$category,'status'=>'success'],200);
+            // if($category==null){
+            //     return $this->returnError("something went wrong",422);
+            // }
+            // return response()->json(['category'=>$category,'status'=>'success'],200);
+            return $this->apiResponse(CategoryResource::make($category) ,__('response/response_message.created_success') ,200);
+
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
 
@@ -60,7 +68,9 @@ class CategoryController extends Controller
         try {
 
             // return response()->json(['category'=>$category,'status'=>'success'],200);
-            return $this->apiResponse($category , 'success',200);
+            // return $this->apiResponse($category , 'success',200);
+            return $this->apiResponse(CategoryResource::make($category) ,__('response/response_message.data_retrieved') ,200);
+
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
 
@@ -74,7 +84,9 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request,$id,CategoryServices $categoryServices)
     {
         $category=$categoryServices->update($request,$id);
-return response()->json(['category'=>$category,'status'=>'edited success'],200);
+        return $this->apiResponse(CategoryResource::make($category) ,__('response/response_message.updated_success') ,200);
+
+// return response()->json(['category'=>$category,'status'=>'edited success'],200);
 
     }
 
@@ -86,10 +98,12 @@ return response()->json(['category'=>$category,'status'=>'edited success'],200);
         //
             // $data= $LoginServices->login($request);
             $category=$categoryServices->destroy($id);
-            if($category==null){
-                return $this->returnError(" something went wrong",422);
-            }
-            return $this->apiResponse($category,'deleted success',200);
+            // if($category==null){
+            //     return $this->returnError(" something went wrong",422);
+            // }
+        return $this->apiResponse(CategoryResource::make($category) ,__('response/response_message.deleted_success') ,200);
+
+            // return $this->apiResponse($category,'deleted success',200);
 
 
     }

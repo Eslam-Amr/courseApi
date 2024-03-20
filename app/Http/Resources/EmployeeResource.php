@@ -16,6 +16,7 @@ class EmployeeResource extends JsonResource
     {
         return [
 
+            'employee_id' => $this->id,
             'salary' => $this->salary,
             'role' => $this->role,
             'working_hour' => $this->working_hour,
@@ -25,6 +26,10 @@ class EmployeeResource extends JsonResource
             'image' => $this->user->image,
             'dateOfBirth' => $this->user->dateOfBirth,
             'gender' => $this->user->gender,
+            'region' => [
+                'city' => isset($this->user->region->city) ? $this->user->region->city : null,
+                'name' => isset($this->user->region->name) ? $this->user->region->name : null,
+            ]
             // 'region' => [
                 //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
                 //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,

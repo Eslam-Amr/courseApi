@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Requests\EmployeeUpdateRequest;
+use App\Http\Resources\EmployeeCollection;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Empolyee;
 use App\Models\User;
@@ -21,15 +22,12 @@ class EmployeeController extends Controller
     //
     public function store(CreateEmployeeRequest $request,EmployeeServices $createEmployeeServices)
     {
+        $employee=$createEmployeeServices->store($request);
         try {
-        $user=$createEmployeeServices->store($request);
 
-            return $this->apiResponse((new EmployeeResource($user)),'successfully',200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+            return $this->apiResponse((EmployeeResource::make($employee)),__('response/response_message.created_success'),200);
+        }  catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
     public function index(EmployeeServices $employeeServices){
@@ -40,25 +38,25 @@ class EmployeeController extends Controller
 
         $employee = $employeeServices->index();
         try {
-            return $this->apiResponse($employee, 'success', 200);
+            return $this->apiResponse(EmployeeCollection::make($employee), __('response/response_message.data_retrieved'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
 
     }
         public function show($id,EmployeeServices $employeeServices){
-        $user=$employeeServices->show($id);
+        $employee=$employeeServices->show($id);
         try {
-            return $this->apiResponse($user,'success',200);
+            return $this->apiResponse((EmployeeResource::make($employee)),__('response/response_message.data_retrieved'),200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
     }
 
     public function destroy($id,EmployeeServices $employeeServices){
-                $user=$employeeServices->destroy($id);
+                $employee=$employeeServices->destroy($id);
                 try {
-                    return $this->apiResponse($user,'success',200);
+                    return $this->apiResponse((EmployeeResource::make($employee)),__('response/response_message.deleted_success'),200);
                 } catch (\Exception $ex) {
                     return $this->returnError($ex->getCode(), $ex->getMessage());
                 }
@@ -66,9 +64,9 @@ class EmployeeController extends Controller
     public function update($id,EmployeeServices $employeeServices,EmployeeUpdateRequest $request){
         // return $id;
 
-        $user=$employeeServices->update($request,$id);
+        $employee=$employeeServices->update($request,$id);
         try {
-            return $this->apiResponse((new EmployeeResource($user)),'successfully',200);
+            return $this->apiResponse((EmployeeResource::make($employee)),__('response/response_message.updated_success'),200);
         }  catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }

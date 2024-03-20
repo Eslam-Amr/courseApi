@@ -14,7 +14,9 @@ class TechnicalEmployeeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($request->user,$this->user);
         return [
+            'technical_employee_id' => $this->id,
             'salary' => $this->salary,
             'role' => $this->role,
             'number_of_group' => $this->number_of_group,
@@ -23,14 +25,12 @@ class TechnicalEmployeeResource extends JsonResource
             'image' => $this->user->image,
             'dateOfBirth' => $this->user->dateOfBirth,
             'gender' => $this->user->gender,
-            // 'region' => [
-            //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
-            //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,
-            // ]
-            // 'region' => [
-            //     'name'=>$this->region->name,
-            //     'city'=>$this->region->city
-            //     ]
+            'region' => [
+                'city' => isset($this->user->region->city) ? $this->user->region->city : null,
+                'name' => isset($this->user->region->name) ? $this->user->region->name : null,
+            ]
+            // 'region' => RegionResource::make($this->region)
+
         ];
     }
 }

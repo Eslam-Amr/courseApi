@@ -5,6 +5,7 @@ namespace App\Http\Controllers\APi\Admin\CourseControl;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseCreateRequest;
 use App\Http\Requests\CourseUpdateRequest;
+use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseResource;
 use App\Models\Course;
 // use App\Models\Course;
@@ -20,7 +21,7 @@ class CourseController extends Controller
         $course = $courseServices->index();
         try {
 
-            return $this->apiResponse($course, 'success', 200);
+            return $this->apiResponse(CourseCollection::make($course),__('response/response_message.data_retrieved'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -34,10 +35,11 @@ class CourseController extends Controller
 
         // return $request['category'];
         //
+        $course = $courseServices->store($request);
+        // dd($course);
         try {
             // $courseServices->create($request);
-            $course = $courseServices->store($request);
-            return $this->apiResponse($course, 'success', 200);
+            return $this->apiResponse(CourseResource::make($course),__('response/response_message.created_success'), 200);
             // return response()->json(['course'=>$course,'status'=>'success'],200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
@@ -51,7 +53,7 @@ class CourseController extends Controller
     {
         $course = $courseServices->show($id);
         try {
-            return $this->apiResponse((new CourseResource($course)), 'success', 200);
+            return $this->apiResponse(CourseResource::make($course),__('response/response_message.data_retrieved'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -67,7 +69,7 @@ class CourseController extends Controller
         //
         $course=$courseServices->destroy($id);
             try {
-                return $this->apiResponse($course,'success',200);
+                return $this->apiResponse(CourseResource::make($course),__('response/response_message.deleted_success'), 200);
             } catch (\Exception $ex) {
                 return $this->returnError($ex->getCode(), $ex->getMessage());
             }
@@ -77,7 +79,7 @@ class CourseController extends Controller
 
         $course=$courseServices->update($request,$id);
         try {
-            return $this->apiResponse($course,'successfully',200);
+            return $this->apiResponse(CourseResource::make($course),__('response/response_message.updated_success'), 200);
         }  catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }

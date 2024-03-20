@@ -25,7 +25,8 @@ class EditProfileController extends Controller
         // $regionId=Helper::getRegionId($request->region);
             // $user->update($request);
             // Helper::editProfile($request,$user,$regionId);
-            return response()->json(['user'=>$this->apiResponse((new ProfileResource($user)),"successfully",200)]);
+            // return response()->json(['user'=>$this->apiResponse((new ProfileResource($user)),"successfully",200)]);
+            return $this->apiResponse(ProfileResource::make($user),__('response/response_message.updated_success'),200);
         // } catch (\Exception $ex) {
         //     return $this->returnError($ex->getCode(), $ex->getMessage());
 

@@ -25,7 +25,7 @@ class Helper
             'name' => $request->name,
             'email' => $request->email,
             'role' => $role,
-            'region_id' => isset($request['regionId']) ? $request['regionId'] : null,
+            'region_id' => isset($request['region_id']) ? $request['region_id'] : null,
             'gender' => $request->gender,
             'image' => isset($request->image) ? $request->image : null,
             'dateOfBirth' => isset($request->dateOfBirth) ? $request->dateOfBirth : null,
@@ -89,7 +89,7 @@ class Helper
         //     'gender' => $request->gender,
         //     'password' => Hash::make($request->password)
         // ]);
-        Empolyee::create([
+        $employee=Empolyee::create([
             'user_id' => $user->id,
             'salary' => $request->salary,
             'role' => $request->role,
@@ -97,7 +97,7 @@ class Helper
             'working_place' => $request->working_place,
         ]);
         DB::commit();
-        return $user;
+        return $employee;
     }
     public static function createTechnicalEmployee(CreateTechnicalEmployeeRequest $request)
     {
@@ -109,14 +109,14 @@ class Helper
         // else
         //     $regionId = null;
         $user = Helper::createUser($request,  'technicalEmployee');
-        TechnicalEmployee::create([
+        $employee=TechnicalEmployee::create([
             'user_id' => $user->id,
             'salary' => $request->salary,
             'role' => $request->role,
             'number_of_group' => $request->number_of_group,
         ]);
         DB::commit();
-        return $user;
+        return $employee;
     }
     public static function editProfile(Request $request, $data)
     {

@@ -24,13 +24,13 @@ class TechnicalEmployeeServices
     public function store(CreateTechnicalEmployeeRequest $request)
     {
         // try {
-        $user = Helper::createTechnicalEmployee($request);
+        $employee = Helper::createTechnicalEmployee($request);
         // return response()->json([
         //     'status' => true,
         //     'message' => 'employee Created Successfully',
         //     'token' => $user->createToken("API TOKEN")->plainTextToken
         // ], 200);
-        return $user;
+        return $employee;
         // } catch (\Throwable $th) {
         //     return response()->json([
         //         'status' => false,

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class EmployeeServices
 {
@@ -28,6 +29,7 @@ class EmployeeServices
             //     'message' => 'employee Created Successfully',
             //     'token' => $user->createToken("API TOKEN")->plainTextToken
             // ], 200);
+            // $role=Role::where('name','')
             return $user;
         // } catch (\Throwable $th) {
         //     return response()->json([

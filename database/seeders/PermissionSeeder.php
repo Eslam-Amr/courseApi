@@ -7,6 +7,7 @@ use App\Models\TechnicalEmployee;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -19,6 +20,13 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        /*
+        $admin = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('admin123')
+        ]);
+        */
         // dd(User::select('users.*', 'technical_employees.*')
         // ->join('technical_employees', 'users.id', '=', 'technical_employees.user_id')
         // ->where('technical_employees.role', 'mentor')
@@ -55,11 +63,11 @@ class PermissionSeeder extends Seeder
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $adminRole->givePermissionTo([ $category_update, $category_delete, $category_store,$course_update,$course_delete,$course_store,$region_update,$region_delete,$region_store,$technical_employee_update,$technical_employee_delete,$technical_employee_store,$employee_update,$employee_delete,$employee_store,$employee_index,$employee_show,$assignment_index,$assignment_show]);
         $userRole = Role::firstOrCreate(['name' => 'user']);
-        $userRole->givePermissionTo([$assignment_update,$assignment_delete,$assignment_store,$assignment_index,$assignment_show]);
+        $userRole->givePermissionTo([$assignment_index,$assignment_show]);
         $instractorRole = Role::firstOrCreate(['name' => 'instractor']);
-        $instractorRole->givePermissionTo([$assignment_index,$assignment_show]);
+        $instractorRole->givePermissionTo([$assignment_update,$assignment_delete,$assignment_store,$assignment_index,$assignment_show]);
         $mentorRole = Role::firstOrCreate(['name' => 'mentor']);
-        $mentorRole->givePermissionTo([$assignment_index,$assignment_show]);
+        $mentorRole->givePermissionTo([$assignment_update,$assignment_delete,$assignment_store,$assignment_index,$assignment_show]);
         /*
         user can register course and show progress and attendance
         */

@@ -9,6 +9,7 @@ use Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class UserRegisterServices
 {
@@ -31,6 +32,8 @@ class UserRegisterServices
         // $regionId = null;
         $user = Helper::createUser($request,'student');
         // dd($user);
+        $role=Role::where('name','user')->first();
+        $user->assignRole($role);
         // $user=User::create($request->validated());
         $token = $user->createToken($request->header('user-agent'));
         return ['token' => $token->plainTextToken, 'user' => $user];

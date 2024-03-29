@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class TechnicalEmployeeServices
 {
@@ -25,6 +26,15 @@ class TechnicalEmployeeServices
     {
         // try {
         $employee = Helper::createTechnicalEmployee($request);
+        $user=User::find($employee->user_id);
+        if($request->role=='mentor'){
+            $role=Role::where('name','mentor')->first();
+            $user->assignRole($role);
+        }
+        else if($request->role=='instractor'){
+            $role=Role::where('name','instractor')->first();
+            $user->assignRole($role);
+        }
         // return response()->json([
         //     'status' => true,
         //     'message' => 'employee Created Successfully',
@@ -53,6 +63,16 @@ class TechnicalEmployeeServices
             'password' => $request->password == null ? $technicalEmloyeeUser->password : $request->password,
             'region_id' => $request->regionId == null ? $technicalEmloyeeUser->regionId : $request->regionId,
         ]);
+        if($request->role=='mentor'){
+            $role=Role::where('name','mentor')->first();
+            $technicalEmloyeeUser->removeRole($technicalEmloyeeUser->roles()->first());
+            $technicalEmloyeeUser->assignRole($role);
+        }
+        else if($request->role=='instractor'){
+            $role=Role::where('name','instractor')->first();
+            $technicalEmloyeeUser->removeRole($technicalEmloyeeUser->roles()->first());
+            $technicalEmloyeeUser->assignRole($role);
+        }
         $technicalEmloyee->update([
 
             'role' => $request->role == null ? $technicalEmloyee->role : $request->role,

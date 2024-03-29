@@ -26,7 +26,10 @@ use App\Http\Controllers\AssignmentSolutionController;
 use App\Http\Controllers\AttendancesController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupTechnicalEmployeeController;
+use App\Http\Controllers\PermissionAssignController;
+use App\Http\Controllers\permissionController;
 use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SessionController;
 // use App\Http\Controllers\CourseController;
 // use App\Http\Controllers\Api\user\UserRegisterController;
@@ -90,8 +93,14 @@ Route::resource('/course', CourseController::class);
 Route::resource('/region',RegionController::class);
 Route::resource('/employee', EmployeeController::class);
 Route::resource('/technicalEmployee', TechnicalEmployeeController::class);
+Route::resource('/assignment', AssignmentController::class);
+Route::resource('/role', RoleController::class);
+// Route::resource('/assignPermission', PermissionAssignController::class);
+Route::post('/assignPermission', [PermissionAssignController::class, 'store'])->middleware(['is.admin','auth:sanctum'])->name('assignPermission.store');
+Route::delete('/assignPermission', [PermissionAssignController::class, 'destroy'])->middleware(['is.admin','auth:sanctum'])->name('assignPermission.deassign');
+Route::resource('/permission',permissionController::class);
+
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
-    Route::resource('/assignment', AssignmentController::class);
     Route::resource('/technicalEmployeeGroups', GroupTechnicalEmployeeController::class);
     // Route::post('/createGroup', [GroupController::class, 'store']);
     Route::resource('/group', GroupController::class);

@@ -14,6 +14,7 @@ class ProfileResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // dd($this->name);
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -21,14 +22,14 @@ class ProfileResource extends JsonResource
             'image' => $this->image,
             'dateOfBirth' => $this->dateOfBirth,
             'gender' => $this->gender,
-            // 'region' => [
-                //     'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
-                //     'name' => isset($request['region']['name']) ? $request['region']['name'] : null,
-                // ]
-                'region' => [
-                    'name'=>$this->region->name,
-                    'city'=>$this->region->city
-                    ]
+            'region' => [
+                    'city' => isset($request['region']['city']) ? $request['region']['city'] : null,
+                    'name' => isset($request['region']['name']) ? $request['region']['name'] : null,
+                ]
+                // 'region' => [
+                //     'name'=>$this->region->name,
+                //     'city'=>$this->region->city
+                //     ]
         ];
       }
 }

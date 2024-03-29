@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\AttendancesActions\AttendancesAction;
 use App\Http\Requests\AttendancesRequest;
 use App\Http\Requests\AttendancesUpdateRequest;
+use App\Http\Resources\AttendanceCollection;
+use App\Http\Resources\AttendanceResource;
 use App\Models\Attendances;
 use App\Services\AdminServices\AttendancesServices\AttendancesServices;
 use App\Traits\GeneralTrait;
@@ -19,8 +21,7 @@ class AttendancesController extends Controller
     public function index(AttendancesServices $attendancesServices)
     {
         $attendance = $attendancesServices->index();
-
-        return $this->apiResponse($attendance, 'success', 200);
+        return $this->apiResponse(AttendanceCollection::make($attendance), __('response/response_message.data_retrieved'), 200);
     }
 
     /**
@@ -31,10 +32,10 @@ class AttendancesController extends Controller
         //
         $ifExists = $attendancesAction->handle($request->session_id, $request->user_id);
         if ($ifExists == 1) {
-            return $this->apiResponse('', 'already exists', 302);
+            return $this->apiResponse('', __('response/response_message.already_exist'), 302);
         }
         $attendance = $attendancesServices->store($request);
-        return  $this->apiResponse($attendance, 'added successfuly', 200);
+        return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.created_success'), 200);
     }
 
     /**
@@ -44,19 +45,19 @@ class AttendancesController extends Controller
     {
         //
         $attendance = $attendancesServices->show($attendancesId);
-        return $this->apiResponse($attendance, 'success', 200);
+        return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.data_retrieved'), 200);
     }
     public function showForSession($sessionId, AttendancesServices $attendancesServices)
     {
         //
         $attendance = $attendancesServices->showForSession($sessionId);
-        return $this->apiResponse($attendance, 'success', 200);
+        return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.data_retrieved'), 200);
     }
     public function showForUser($userId, AttendancesServices $attendancesServices)
     {
         //
         $attendance = $attendancesServices->showForUser($userId);
-        return $this->apiResponse($attendance, 'success', 200);
+        return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.data_retrieved'), 200);
     }
 
 
@@ -66,9 +67,10 @@ class AttendancesController extends Controller
      */
     public function update(AttendancesUpdateRequest $request, $id, AttendancesServices $attendancesServices)
     {
-$attendance=$attendancesServices->update($request,$id);
+        $attendance = $attendancesServices->update($request, $id);
 
-        return $this->apiResponse($attendance, 'updated successfuly', 200);}
+        return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.updated_success'), 200);
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -77,6 +79,7 @@ $attendance=$attendancesServices->update($request,$id);
     {
         $attendance = $attendancesServices->destroy($id);
 
-        return  $this->apiResponse($attendance, 'deleted successfuly', 200);
+        return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.deleted_success'), 200);
+
     }
 }

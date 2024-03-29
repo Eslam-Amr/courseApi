@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Actions\AssignmentSolutionActions\AssignmentSolutionAction;
 use App\Http\Requests\AssignmentSolutionRequest;
+use App\Http\Resources\AssignmentResource;
+use App\Http\Resources\AssignmentSolutionCollection;
+use App\Http\Resources\AssignmentSolutionResource;
 use App\Models\Assignment;
 use App\Models\AssignmentSolution;
 use App\Services\UserServices\AssignmentSolutionServices\AssignmentSolutionServices;
@@ -19,14 +22,15 @@ class AssignmentSolutionController extends Controller
      */
     public function index(AssignmentSolutionServices $assignmentSolutionServices)
     {
-            $assignment = $assignmentSolutionServices->index();
-            try {
+        $assignment = $assignmentSolutionServices->index();
+        try {
 
-                return $this->apiResponse($assignment, 'success', 200);
-            } catch (\Exception $ex) {
-                return $this->returnError($ex->getCode(), $ex->getMessage());
-            }
+            return $this->apiResponse(AssignmentSolutionCollection::make($assignment), __('response/response_message.data_retrieved'), 200);
+            // return $this->apiResponse($assignment, 'success', 200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
         }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -36,21 +40,22 @@ class AssignmentSolutionController extends Controller
 
         $ifExists = $assignmentSolutionAction->handle($request->assignment_id, auth()->user()->id);
         if ($ifExists == 1) {
-            return $this->apiResponse('', 'already exists', 302);
+            return $this->apiResponse('', __('response/response_message.already_exist'), 302);
+            // return $this->apiResponse('', 'already exists', 302);
         }
         // /*
         // check for date
         // */
         if ($ifExists == 2) {
-            return $this->apiResponse('null', 'this assignment is not active', 302);
+            return $this->apiResponse('', __('response/response_message.assignment_not_active'), 302);
+
+            // return $this->apiResponse('null', 'this assignment is not active', 302);
         }
 
         $assignment = $assignmentSolutionServices->store($request);
         try {
 
-    return $this->apiResponse($assignment, 'success', 200);
-
-
+            return $this->apiResponse(AssignmentSolutionResource::make($assignment), __('response/response_message.created_success'), 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -59,13 +64,15 @@ class AssignmentSolutionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show( AssignmentSolutionServices $assignmentSolutionServices,$assignmentId)
+    public function show(AssignmentSolutionServices $assignmentSolutionServices, $assignmentId)
     {
         //
 
         $assignmentSolution = $assignmentSolutionServices->show($assignmentId);
         try {
-            return $this->apiResponse($assignmentSolution, 'success', 200);
+            return $this->apiResponse(AssignmentSolutionResource::make($assignmentSolution), __('response/response_message.data_retrieved'), 200);
+
+            // return $this->apiResponse($assignmentSolution, 'success', 200);
         } catch (\Exception $ex) {
             return $this->returnError($ex->getCode(), $ex->getMessage());
         }
@@ -82,14 +89,14 @@ class AssignmentSolutionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AssignmentSolutionServices $assignmentSolutionServices,$assignmentId)
+    public function destroy(AssignmentSolutionServices $assignmentSolutionServices, $assignmentId)
     {
+$assignmentSolution=$assignmentSolutionServices->destroy($assignmentId);
+        try {
 
-try {
-
-    return $this->apiResponse($assignmentSolutionServices->destroy($assignmentId), 'deleted successfuly', 200);
-} catch (\Exception $ex) {
-    return $this->returnError($ex->getCode(), $ex->getMessage());
-}
+            return $this->apiResponse(AssignmentSolutionResource::make($assignmentSolution), __('response/response_message.deleted_success'), 200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
     }
 }

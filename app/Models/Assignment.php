@@ -12,4 +12,7 @@ class Assignment extends Model
     public function assignmentSolution(){
         return $this->hasMany(AssignmentSolution::class);
     }
+    public function group(){
+        return $this->belongsTo(Group::class);
+    }
 }

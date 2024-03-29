@@ -18,6 +18,23 @@ class RegionController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:region-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:region-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:region-store,store'
+        ])->only(['store']);
+    }
     public function index(RegionServices $regionServices)
     {
         //

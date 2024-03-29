@@ -3,9 +3,11 @@
 namespace App\Http;
 
 use App\Http\Middleware\AssignGuard;
+use App\Http\Middleware\CheckPermissionMiddleware;
 use App\Http\Middleware\IsAdminMiddleware;
 use App\Http\Middleware\Localization;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
 
 class Kernel extends HttpKernel
 {
@@ -70,6 +72,9 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     'auth.guard'=>AssignGuard::class,
-    'is.admin' => IsAdminMiddleware::class
+    'is.admin' => IsAdminMiddleware::class,
+    'role_or_permission' => RoleOrPermissionMiddleware::class,
+    'check.permission' =>CheckPermissionMiddleware::class,
+
     ];
 }

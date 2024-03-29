@@ -16,6 +16,23 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
     use GeneralTrait;
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-store,store'
+        ])->only(['store']);
+    }
 
     public function index( CourseServices $courseServices ){
         $course = $courseServices->index();

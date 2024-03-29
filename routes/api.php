@@ -57,7 +57,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('/user/profile',[ProfileController::class, 'profile'])->middleware('auth:sanctum');
 
-Route::resource('/course',CourseController::class)->only('show','index');
+// Route::resource('/course',CourseController::class)->only('show','index');
 
 Route::post('/user/register',[UserRegisterController::class,'createUser']);
 Route::post('/user/wishlist/{id}',[WishlistController::class,'index'])->middleware('auth:sanctum');
@@ -79,32 +79,35 @@ Route::post('/login',[LoginController::class,'login']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
 // Route::resource('/progress', ProgressController::class)->middleware('auth:sanctum');
-Route::resource('/technicalEmployee', TechnicalEmployeeController::class)->only('index','show');
+// Route::resource('/technicalEmployee', TechnicalEmployeeController::class)->only('index','show');
 Route::resource('/region', RegionController::class)->only('index','show');
 // Route::post('/registeration/{groupId}',[CourseRegistrationController::class,'store'])->middleware('auth:sanctum');
 Route::resource('/assignment',AssignmentSolutionController::class)->middleware('auth:sanctum');
+// Route::get('/assignment',[AssignmentSolutionController::class,'index'])->middleware('auth:sanctum');
 Route::resource('/registeration',CourseRegistrationController::class)->middleware('auth:sanctum');
+Route::resource('/category', CategoryController::class);
+Route::resource('/course', CourseController::class);
+Route::resource('/region',RegionController::class);
+Route::resource('/employee', EmployeeController::class);
+Route::resource('/technicalEmployee', TechnicalEmployeeController::class);
 Route::prefix('/admin')->middleware(['auth:sanctum', 'is.admin'])->group(function () {
+    Route::resource('/assignment', AssignmentController::class);
     Route::resource('/technicalEmployeeGroups', GroupTechnicalEmployeeController::class);
     // Route::post('/createGroup', [GroupController::class, 'store']);
     Route::resource('/group', GroupController::class);
-    Route::resource('/employee', EmployeeController::class);
-    Route::resource('/technicalEmployee', TechnicalEmployeeController::class);
     Route::resource('/registeration',AdminCourseRegistration::class);
-    Route::resource('/assignment', AssignmentController::class);
     Route::resource('/session', SessionController::class);
     // Route::post('/createSession', [SessionController::class, 'store']);
     // Route::put('/updateSession/{sessionId}', [SessionController::class, 'update']);
     // Route::delete('/deleteSession/{sessionId}', [SessionController::class, 'destroy']);
     // Route::get('/showSession/{sessionId}', [SessionController::class, 'show']);
     // Route::get('/session', [SessionController::class, 'index']);
-    Route::resource('/region',RegionController::class);
     Route::resource('/attendances',AttendancesController::class);
-    Route::resource('/course', CourseController::class);
 
-    Route::resource('/category', CategoryController::class);
 
     // Route::get('/getEmployee',function(){
     //     return Empolyee::with('employee')->get();
     // });
 });
+// Route::resource('roles', RolesController::class);
+// Route::resource('permissions', PermissionsController::class);

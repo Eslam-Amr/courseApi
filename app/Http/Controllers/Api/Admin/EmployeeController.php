@@ -20,6 +20,31 @@ class EmployeeController extends Controller
 {
     use GeneralTrait;
     //
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:employee-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:employee-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:employee-store,store'
+        ])->only(['store']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:employee-index,index'
+        ])->only(['index']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:employee-show,show'
+        ])->only(['show']);
+    }
     public function store(CreateEmployeeRequest $request,EmployeeServices $createEmployeeServices)
     {
         $employee=$createEmployeeServices->store($request);

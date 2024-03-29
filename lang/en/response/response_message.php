@@ -15,5 +15,6 @@ return [
     'already_exist' => 'already exist',
     'already_registered' => 'already registered',
     'already_complete' => 'no place to register in ',
+    'assignment_not_active' => 'this assignment is not active ',
 
 ];

@@ -26,7 +26,8 @@ class AssignmentServices
 public function index(){
     return Assignment::paginate();
 }
-    public function store(AssignmentRequest $request,)
+    public function store(AssignmentRequest $request)
+    // public function store(Request $request)
     {
         $assignment = Assignment::create($request->validated());
         return $assignment;

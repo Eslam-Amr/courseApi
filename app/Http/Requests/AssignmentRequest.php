@@ -26,11 +26,13 @@ class AssignmentRequest extends FormRequest
         return [
             //
             'type' => 'required|in:search,assignment',
-'file'=>'required',
-// 'descreption'=>'required|min:3|max:100',
-'start_date'=>'required|date_format:Y-m-d|before:dead_line',
-'dead_line'=>'required|date_format:Y-m-d|after:start_date',
-'course_id'=>'required|exists:courses,id',
+            'file' => 'required',
+            // 'descreption'=>'required|min:3|max:100',
+            'start_date' => 'required|date_format:Y-m-d|before:dead_line',
+            'dead_line' => 'required|date_format:Y-m-d|after:start_date',
+            'course_id' => 'required|exists:courses,id',
+            'group_id' => 'required|exists:groups,id',
+            'descreption' => 'min:3|max:255',
         ];
     }
 }

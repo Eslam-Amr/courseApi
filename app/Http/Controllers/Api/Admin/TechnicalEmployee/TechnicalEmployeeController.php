@@ -19,6 +19,23 @@ class TechnicalEmployeeController extends Controller
 {
     //
     use GeneralTrait;
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:technical-employee-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:technical-employee-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:technical-employee-store,store'
+        ])->only(['store']);
+    }
     public function store(CreateTechnicalEmployeeRequest $request,TechnicalEmployeeServices $technicalEmployeeServices)
     {
         // try {

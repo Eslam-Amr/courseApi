@@ -13,5 +13,6 @@ return [
     'already_exist' => 'موجود مسبقا ',
     'already_registered' => 'محجوز بالفعل',
     'already_complete' => 'تم اكتمال العدد  ',
+    'assignment_not_active' => 'لا يمكنك التسليم ',
 
 ];

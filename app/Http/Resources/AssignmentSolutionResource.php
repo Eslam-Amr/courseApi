@@ -19,6 +19,7 @@ class AssignmentSolutionResource extends JsonResource
             "assignment_id"=> AssignmentResource::make($this->assignment),
         "group_id"=>GroupResource::make($this->group),
         "solution_link"=> $this->solution_link,
+        "evaluation"=> $this->evaluation,
         "user_id"=> UserResource::make($this->user),
         "date"=> $this->date,
         ];

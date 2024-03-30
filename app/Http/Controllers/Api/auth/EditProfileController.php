@@ -17,6 +17,9 @@ class EditProfileController extends Controller
     // public function edit(Request $request){
     //     return $request;
     // }
+    public function __construct(){
+        $this->middleware(['auth:sanctum'])->only(['edit']);
+    }
     public function edit(EditProfileServices $editProfileServices,ProfileUpdateRequest $request){
         // return $request;
         // try {

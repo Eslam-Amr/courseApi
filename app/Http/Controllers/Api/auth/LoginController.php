@@ -14,6 +14,9 @@ use App\Traits\GeneralTrait;
 class LoginController extends Controller
 {
     use GeneralTrait;
+    public function __construct(){
+        $this->middleware(['guest'])->only(['edit']);
+    }
     public function login(UserLoginRequest $request,LoginServices $LoginServices){
         try {
             $data= $LoginServices->login($request);

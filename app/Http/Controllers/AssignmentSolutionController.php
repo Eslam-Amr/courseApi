@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\AssignmentSolutionActions\AssignmentSolutionAction;
 use App\Http\Requests\AssignmentSolutionRequest;
+use App\Http\Requests\AssignmentSolutionUpdateRequest;
 use App\Http\Resources\AssignmentResource;
 use App\Http\Resources\AssignmentSolutionCollection;
 use App\Http\Resources\AssignmentSolutionResource;
@@ -20,6 +21,31 @@ class AssignmentSolutionController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:assignment-solution-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:assignment-solution-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:assignment-solution-store,store'
+        ])->only(['store']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:assignment-solution-index,index'
+        ])->only(['index']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:assignment-solution-show,show'
+        ])->only(['show']);
+    }
     public function index(AssignmentSolutionServices $assignmentSolutionServices)
     {
         $assignment = $assignmentSolutionServices->index();
@@ -81,9 +107,15 @@ class AssignmentSolutionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AssignmentSolution $assignmentSolution)
+    public function update(AssignmentSolutionUpdateRequest $request,$assignmentSolutionId, AssignmentSolutionServices $assignmentSolutionServices)
     {
-        //
+        // update for mentor to update evaluation
+        $assignmentSolutionEvaluation=$assignmentSolutionServices->update($request,$assignmentSolutionId);
+        try {
+            return $this->apiResponse(AssignmentSolutionResource::make($assignmentSolutionEvaluation), __('response/response_message.updated_success'), 200);
+        } catch (\Exception $ex) {
+            return $this->returnError($ex->getCode(), $ex->getMessage());
+        }
     }
 
     /**

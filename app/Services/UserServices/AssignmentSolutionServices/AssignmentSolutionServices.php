@@ -3,6 +3,7 @@
 namespace App\Services\UserServices\AssignmentSolutionServices;
 
 use App\Http\Requests\AssignmentSolutionRequest;
+use App\Http\Requests\AssignmentSolutionUpdateRequest;
 use App\Http\Requests\RateRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Models\Admin;
@@ -46,6 +47,11 @@ class AssignmentSolutionServices
     {
 
         return AssignmentSolution::findOrFail($assignmentId);
+    }
+    public function update(AssignmentSolutionUpdateRequest $request, $assignmentId){
+        $assignmentSolution = AssignmentSolution::findOrFail($assignmentId);
+        $assignmentSolution->update($request->validated());
+        return $assignmentSolution;
     }
 }
 

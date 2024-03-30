@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Admin\TechnicalEmployee\TechnicalEmployeeController
 
 use App\Http\Controllers\Api\auth\EditProfileController;
 use App\Http\Controllers\Api\auth\LoginController;
+use App\Http\Controllers\Api\Auth\LogoutController;
 // use App\Http\Controllers\Api\auth\LoginController as UserLoginController;
 use App\Http\Controllers\Api\auth\ProfileController;
 use App\Http\Controllers\Api\auth\UserRegisterController;
@@ -79,6 +80,7 @@ Route::delete('/user/rate/{id}',[RateController::class,'destroy'])->middleware('
 
 
 Route::post('/login',[LoginController::class,'login']);
+Route::post('/logout',[LogoutController::class,'logout']);
 Route::put('/editProfile',[EditProfileController::class,'edit'])->middleware('auth:sanctum');
 
 // Route::resource('/progress', ProgressController::class)->middleware('auth:sanctum');

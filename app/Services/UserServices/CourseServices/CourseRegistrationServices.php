@@ -19,34 +19,35 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\GeneralTrait;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class CourseRegistrationServices
 {
     use GeneralTrait;
-    public function store(Group $group,$userId)
+    public function store(Group $group, $userId)
     {
         $user = User::find($userId);
-    // $sessions=$group->session;
-    // dd($group->id);
-    // $assignments=$group->assignment;
-    // foreach ($sessions as $session){
-    //     $attendances = new Attendances();
-    //     $attendances->user_id = $user->id;
-    //     $attendances->session_id = $session->id;
-    //     $attendances->save();
-    // }
-    // foreach ($assignments as $assignment){
-    //     AssignmentSol::create([
-    //         'assignment_id' => $assignment->id,
-    //         'user_id' => $user->id,
-    //         'file' => '',
-    //         'descreption' => '',
-    //         'group_id' => $group->id,
-    //         'course_id' => $group->course_id,
-    //         'start_date' => $group->course_id,
-    //         'course_id' => $group->course_id,
-    //     ]);
-    // }
+        // $sessions=$group->session;
+        // dd($group->id);
+        // $assignments=$group->assignment;
+        // foreach ($sessions as $session){
+        //     $attendances = new Attendances();
+        //     $attendances->user_id = $user->id;
+        //     $attendances->session_id = $session->id;
+        //     $attendances->save();
+        // }
+        // foreach ($assignments as $assignment){
+        //     AssignmentSol::create([
+        //         'assignment_id' => $assignment->id,
+        //         'user_id' => $user->id,
+        //         'file' => '',
+        //         'descreption' => '',
+        //         'group_id' => $group->id,
+        //         'course_id' => $group->course_id,
+        //         'start_date' => $group->course_id,
+        //         'course_id' => $group->course_id,
+        //     ]);
+        // }
         DB::beginTransaction();
         try {
             if ($group->registered_student < $group->max_student)
@@ -58,12 +59,18 @@ class CourseRegistrationServices
         }
         return $user;
     }
-    public function destroy($groupId,$userId)
+    public function destroy($groupId, $userId)
     {
 
         $user = User::find($userId);
         $session = GroupUser::where('group_id', $groupId)->where('user_id', $user->id)->first();
         $group = Group::findOrFail($groupId);
+        // $startDate = Carbon::parse($group->start_date);
+        // $currentDate = Carbon::now();
+        // $weeksDifference = $currentDate->diffInWeeks($startDate);
+        // if ($weeksDifference < 2) {
+        //     return null;
+        // }
         if ($session) {
             DB::beginTransaction();
             try {
@@ -80,16 +87,12 @@ class CourseRegistrationServices
     }
     public function index($userId)
     {
-        $user=User::find($userId);
+        $user = User::find($userId);
         return $user->group()->paginate();
     }
-    public function show($groupId,$userId)
+    public function show($groupId, $userId)
     {
 
         return GroupUser::where('group_id', $groupId)->where('user_id', $userId)->first();
     }
 }
-
-
-
-

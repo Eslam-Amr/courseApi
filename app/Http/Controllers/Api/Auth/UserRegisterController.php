@@ -20,6 +20,12 @@ class UserRegisterController extends Controller
 {
     //
     use GeneralTrait;
+    public function __construct(){
+        $this->middleware([
+            'guest',
+            // 'check.permission:user-createAccount,register'
+        ])->only(['createUser']);
+    }
 
     public function createUser(UserRegisterRequest $request)
     {

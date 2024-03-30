@@ -16,5 +16,6 @@ return [
     'already_registered' => 'already registered',
     'already_complete' => 'no place to register in ',
     'assignment_not_active' => 'this assignment is not active ',
+    'can_not_delete_before_2_weeks' => 'you can\'t delete the remaining time to start smaller than 2 weeks',
 
 ];

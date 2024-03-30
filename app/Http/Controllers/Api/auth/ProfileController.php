@@ -11,6 +11,9 @@ class ProfileController extends Controller
 {
 use GeneralTrait;
     //
+    public function __construct(){
+        $this->middleware(['auth:sanctum'])->only(['edit']);
+    }
     public function profile(){
         // return auth()->user();
         return $this->apiResponse(ProfileResource::make(auth()->user()),__('response/response_message.data_retrieved'),200);

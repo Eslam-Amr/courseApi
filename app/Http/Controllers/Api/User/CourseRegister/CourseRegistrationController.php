@@ -12,12 +12,38 @@ use App\Models\Group;
 use App\Models\User;
 use App\Services\UserServices\CourseServices\CourseRegistrationServices;
 use App\Traits\GeneralTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CourseRegistrationController extends Controller
 {
     //
     use GeneralTrait;
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-registeration-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-registeration-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-registeration-store,store'
+        ])->only(['store']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-registeration-index,index'
+        ])->only(['index']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:course-registeration-show,show'
+        ])->only(['show']);
+    }
     public function store(CourseRegistrationRequest $request, CourseRegistrationServices $courseRegistrationServices, CourseAction $courseAction)
     {
         $group = Group::select('max_student', 'registered_student', 'id','course_id')->findOrFail($request->group_id);
@@ -30,6 +56,14 @@ class CourseRegistrationController extends Controller
     }
     public function destroy($groupId, CourseRegistrationServices $courseRegistrationServices)
     {
+        $group = Group::findOrFail($groupId);
+        $startDate = Carbon::parse($group->start_date);
+        $currentDate = Carbon::now();
+        $weeksDifference = $currentDate->diffInWeeks($startDate);
+        if ($weeksDifference < 2) {
+            // dd($weeksDifference,$startDate,$currentDate,$weeksDifference<2);
+            return $this->apiResponse('null',  __('response/response_message.can_not_delete_before_2_weeks'), 200);
+        }
         $session = $courseRegistrationServices->destroy($groupId,auth()->user()->id);
         if ($session == null)
             return $this->apiResponse('null', __('response/response_message.already_deleted_success'), 200);

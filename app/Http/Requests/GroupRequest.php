@@ -47,7 +47,8 @@ class GroupRequest extends FormRequest
             // 'end_date' => 'required|date|after:start_date',
             'start_date' => 'required|date_format:Y-m-d|before:end_date',
             'end_date' => 'required|date_format:Y-m-d|after:start_date',
-
+            'instractor_id' => 'nullable|numeric|exists:technical_employees,id',
+            'mentor_id' => 'nullable|numeric|exists:technical_employees,id',
         ];
     }
     public function messages()

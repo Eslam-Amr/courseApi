@@ -18,6 +18,16 @@ class Group extends Model
     public function course(){
         return $this->belongsTo(Course::class,'course_id','id');
     }
+    public function mentor(){
+        // return $this->belongsToMany(TechnicalEmployee::class,'group_technical_employee');
+        return $this->belongsToMany(TechnicalEmployee::class, 'group_technical_employee')
+        ->where('role', 'mentor');
+    }
+    public function instractor(){
+        return $this->belongsToMany(TechnicalEmployee::class, 'group_technical_employee')
+        ->where('role', 'instractor');
+        // return $this->belongsToMany(TechnicalEmployee::class);
+    }
     public function session(){
         return $this->hasMany(Session::class);
     }

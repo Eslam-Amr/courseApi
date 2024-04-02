@@ -30,7 +30,8 @@ class TechnicalEmployeeGroupServices
 
         $employee->group()->syncWithoutDetaching($request->group_id);
         $employee->update(['number_of_group' => ++$employee->number_of_group]);
-        return $employee;
+        // return $employee;
+        return GroupTechnicalEmployee::latest()->get()->last();
     }
     public function index()
     {
@@ -40,8 +41,14 @@ class TechnicalEmployeeGroupServices
 
     public function update(GroupTechnicalEmployeeUpdateRequest $request, $id)
     {
-
         $groupTechnicalEmployee = GroupTechnicalEmployee::findOrFail($id);
+        $group=GroupTechnicalEmployee::where('technical_employee_id',$request->technical_employee_id)->where('group_id',$groupTechnicalEmployee->group_id)->first();
+       if($group)
+       return null;
+    $lastEmployeeRole=TechnicalEmployee::select('role')->findOrFail($groupTechnicalEmployee->technical_employee_id);
+    $newEmployeeRole=TechnicalEmployee::select('role')->findOrFail($request->technical_employee_id);
+    if($lastEmployeeRole!=$newEmployeeRole)
+    return null; 
         $groupTechnicalEmployee->technicalEmployee->decrement('number_of_group');
         $groupTechnicalEmployee->update($request->validated());
         TechnicalEmployee::findOrFail($request->technical_employee_id)->increment('number_of_group');
@@ -61,6 +68,6 @@ class TechnicalEmployeeGroupServices
             $technicalEmployeeGroup->delete();
         }
 
-        return $employee;
+        return $technicalEmployeeGroup;
     }
 }

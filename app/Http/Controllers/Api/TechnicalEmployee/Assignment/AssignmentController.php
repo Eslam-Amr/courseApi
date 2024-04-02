@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APi\TechnicalEmployee\Assignment;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AssignmentRequest;
 use App\Http\Requests\AssignmentUpdateRequest;
 use App\Http\Resources\AssignmentCollection;

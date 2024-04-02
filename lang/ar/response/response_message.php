@@ -15,5 +15,6 @@ return [
     'already_complete' => 'تم اكتمال العدد  ',
     'assignment_not_active' => 'لا يمكنك التسليم ',
     'can_not_delete_before_2_weeks' => 'لا يمكنك حذف الوقت المتبقي لتبدأ أقل من أسبوعين',
-
+    'there_is_alredy_employee_exist' => 'يوجد موظف في هذا المكان بالفعل',
+    'cant_update' =>  'يوجد موظف في هذا المكان بالفعل او نفس الموظف موجود بالفعل ',
 ];

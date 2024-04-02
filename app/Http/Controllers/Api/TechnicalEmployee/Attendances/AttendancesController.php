@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APi\TechnicalEmployee\Attendances;
 
 use App\Actions\AttendancesActions\AttendancesAction;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AttendancesRequest;
 use App\Http\Requests\AttendancesUpdateRequest;
 use App\Http\Resources\AttendanceCollection;
@@ -18,6 +19,31 @@ class AttendancesController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:attendance-delete,delete'
+        ])->only(['destroy']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:attendance-update,update'
+        ])->only(['update']);
+
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:attendance-store,store'
+        ])->only(['store']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:attendance-index,index'
+        ])->only(['index']);
+        $this->middleware([
+            'auth:sanctum',
+            'check.permission:attendance-show,show'
+        ])->only(['show']);
+    }
     public function index(AttendancesServices $attendancesServices)
     {
         $attendance = $attendancesServices->index();
@@ -35,6 +61,7 @@ class AttendancesController extends Controller
             return $this->apiResponse('', __('response/response_message.already_exist'), 302);
         }
         $attendance = $attendancesServices->store($request);
+        // dd($attendance);
         return  $this->apiResponse(AttendanceResource::make($attendance), __('response/response_message.created_success'), 200);
     }
 

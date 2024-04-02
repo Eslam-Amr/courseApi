@@ -4,42 +4,45 @@ namespace App\Services\AdminServices\RoleServices;
 
 use App\Http\Requests\RegionRequest;
 use App\Http\Requests\RegionUpdateRequest;
-
+use App\Http\Requests\RoleRequest;
 use App\Models\Region;
 
 use App\Traits\GeneralTrait;
+use Spatie\Permission\Models\Role;
 
 class RoleServices
 {
     use GeneralTrait;
 
-    public function store(RegionRequest $request)
+    public function store(RoleRequest $request)
     {
-        try {
+        $role = Role::create($request->validated());
+        $permissions = $request->permission;
+        $role->syncPermissions($permissions);
+        return $role;
+    }
+    public function show($id)
+    {
+        return Role::findOrFail($id);
+    }
+    public function index()
+    {
+        return Role::paginate();
+    }
 
-            $region=Region::create($request->validated());
-            return $region;
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
-        }
+    public function update($id, $request)
+    {
+        $role=Role::findOrFail($id);
+        $role->update($request->validated());
+        $permissions = $request->permission;
+
+        $role->syncPermissions($permissions);
+        return $role;
     }
-    public function show($RegionId){
-        return Region::findOrFail($RegionId);
-    }
-    public function index(){
-        return Region::paginate();
-    }
-    public function update($RegionId, RegionUpdateRequest $request){
-        $region=Region::findOrFail($RegionId);
-        $region->update($request->validated());
-        return $region;
-    }
-    public function destroy($RegionId){
-        $region=Region::findOrFail($RegionId);
-        $region->delete();
-        return $region;
+    public function destroy($id)
+    {
+        $role=Role::findOrFail($id);
+        $role->delete();
+        return $role;
     }
 }

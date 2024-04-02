@@ -22,7 +22,7 @@ class AssignmentResource extends JsonResource
             'dead_line' => $this->dead_line,
             // 'course_id' => $this->course_id,
             'descreption' => $this->descreption,
-            'group_id' => GroupResource::make($this->group),
+            'group' => GroupResource::make($this->group),
 
         ];
     }

@@ -11,6 +11,7 @@ use App\Models\Admin;
 use App\Models\Empolyee;
 use App\Models\Group;
 use App\Models\Region;
+use App\Models\TechnicalEmployee;
 use App\Models\User;
 use Helper;
 use Illuminate\Http\Request;
@@ -27,25 +28,39 @@ class GroupServices
     {
         // try {
 
-            $Group = Group::create(array_merge($request->validated(), ['registered_student' => 0]));
-            // $session=(new GroupAction)->handle($Group);
-            (new GroupAction)->handle($Group,$request);
-            return $Group;
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'status' => false,
-        //         'message' => $th->getMessage()
-        //     ], 500);
-        // }
+        $group = Group::create(array_merge($request->validated(), ['registered_student' => 0]));
+        // $session=(new GroupAction)->handle($Group);
+        if (isset($request['instractor_id'])) {
+            $instractor = TechnicalEmployee::findOrFail($request->instractor_id);
+            $instractor->group()->syncWithoutDetaching($group->id);
+            $instractor->update(['number_of_group' => ++$instractor->number_of_group]);
+        }
+        if (isset($request['mentor_id'])) {
+            $mentor = TechnicalEmployee::findOrFail($request->mentor_id);
+            $mentor->group()->syncWithoutDetaching($group->id);
+            $mentor->update(['number_of_group' => ++$mentor->number_of_group]);
+        }
+        (new GroupAction)->handle($group, $request);
+        return $group;
+
     }
-    public function show($groupId){
-        $group=Group::findOrFail($groupId);
+    public function show($groupId)
+    {
+        $group = Group::findOrFail($groupId);
         return $group;
     }
-    public function destroy($groupId){
-        $group=Group::findOrFail($groupId);
+    public function destroy($groupId)
+    {
+        $group = Group::findOrFail($groupId);
         $group->delete();
         return $group;
     }
-
+    public function index(){
+        return Group::paginate();
+    }
+    public function update($request,$id){
+        $group = Group::findOrFail($id);
+        $group->update($request->validated());
+        return $group;
+    }
 }

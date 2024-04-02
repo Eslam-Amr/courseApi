@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\APi\Admin\PermissionRole;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PermissionAssignRequest;
 use App\Services\AdminServices\PermissionAssignServices\PermissionAssignServices;
 use Illuminate\Http\Request;

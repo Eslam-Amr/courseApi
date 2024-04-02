@@ -24,10 +24,10 @@ class UserResource extends JsonResource
                 'user_date_of_birth' => $this->dateOfBirth,
                 'user_role' => $this->role,
                 'user_gender' => $this->gender,
-'region'=>[
-    'name'=>$this->region->name,
-    'city'=>$this->region->city
-],
+'region' => [
+                'city' => isset($this->user->region->city) ? $this->user->region->city : null,
+                'name' => isset($this->user->region->name) ? $this->user->region->name : null,
+            ]
 
             ];
     }

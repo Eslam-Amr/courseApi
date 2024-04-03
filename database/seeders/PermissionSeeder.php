@@ -87,6 +87,7 @@ class PermissionSeeder extends Seeder
         $session_store = Permission::firstOrCreate(['name' => 'session-store']);
         $session_index = Permission::firstOrCreate(['name' => 'session-index']);
         $session_show = Permission::firstOrCreate(['name' => 'session-show']);
+        $wishlist_process = Permission::firstOrCreate(['name' => 'wishlist-process']);
         // $user_register = Permission::firstOrCreate(['name' => 'user-createAccount']);
         //assignment
 
@@ -94,7 +95,7 @@ class PermissionSeeder extends Seeder
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $adminRole->givePermissionTo([ $category_update, $category_delete, $category_store,$course_update,$course_delete,$course_store,$region_update,$region_delete,$region_store,$technical_employee_update,$technical_employee_delete,$technical_employee_store,$employee_update,$employee_delete,$employee_store,$employee_index,$employee_show,$assignment_index,$assignment_show,$attendance_update,$attendance_delete,$attendance_store,$attendance_index,$attendance_show,$group_technical_employee_update,$group_technical_employee_delete,$group_technical_employee_store,$group_technical_employee_index,$group_technical_employee_show,$group_update,$group_delete,$group_store,$group_index,$group_show,$session_update,$session_delete,$session_store,$session_index,$session_show]);
         $userRole = Role::firstOrCreate(['name' => 'user']);
-        $userRole->givePermissionTo([$assignment_solution_index,$assignment_solution_show,$assignment_index,$assignment_show,$course_registeration_update,$course_registeration_delete,$course_registeration_store,$course_registeration_index,$course_registeration_show,$assignment_solution_store,$assignment_solution_index,$assignment_solution_show,$attendance_index,$attendance_show,$group_index,$group_show,$session_index,$session_show]);
+        $userRole->givePermissionTo([$assignment_solution_index,$assignment_solution_show,$assignment_index,$assignment_show,$course_registeration_update,$course_registeration_delete,$course_registeration_store,$course_registeration_index,$course_registeration_show,$assignment_solution_store,$assignment_solution_index,$assignment_solution_show,$attendance_index,$attendance_show,$group_index,$group_show,$session_index,$session_show,$wishlist_process]);
         $instractorRole = Role::firstOrCreate(['name' => 'instractor']);
         $instractorRole->givePermissionTo([$assignment_solution_index,$assignment_solution_show,$assignment_update,$assignment_delete,$assignment_store,$assignment_index,$assignment_show,$attendance_update,$attendance_delete,$attendance_store,$attendance_index,$attendance_show,$group_index,$group_show,$session_index,$session_show]);
         $mentorRole = Role::firstOrCreate(['name' => 'mentor']);

@@ -33,12 +33,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// Route::post('/user/wishlist/{id}',[WishlistController::class,'index'])->middleware('auth:sanctum');
+// Route::get('/user/wishlist',[WishlistController::class,'getWishlist'])->middleware('auth:sanctum');
+// Route::post('/user/add/wishlist/{id}',[WishlistController::class,'addToWishlist'])->middleware('auth:sanctum');
+// Route::delete('/user/delete/wishlist/{id}',[WishlistController::class,'destroy'])->middleware('auth:sanctum');
+
+
+Route::post('user/wishlist/{courseId}',[WishlistController::class,'process']);
+
+
+
 Route::get('/user/profile',[ProfileController::class, 'profile'])->middleware('auth:sanctum');
 Route::post('/user/register',[UserRegisterController::class,'createUser']);
-Route::post('/user/wishlist/{id}',[WishlistController::class,'index'])->middleware('auth:sanctum');
-Route::get('/user/wishlist',[WishlistController::class,'getWishlist'])->middleware('auth:sanctum');
-Route::post('/user/add/wishlist/{id}',[WishlistController::class,'addToWishlist'])->middleware('auth:sanctum');
-Route::delete('/user/delete/wishlist/{id}',[WishlistController::class,'destroy'])->middleware('auth:sanctum');
 Route::post('/user/rate/{id}',[RateController::class,'create'])->middleware('auth:sanctum');
 Route::delete('/user/rate/{id}',[RateController::class,'destroy'])->middleware('auth:sanctum');
 Route::post('/login',[LoginController::class,'login']);
